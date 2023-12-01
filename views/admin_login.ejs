@@ -23,14 +23,14 @@
                 <div class="col-md-6 side-image">
                     <!---      image     --->
                     <div class="text">
-                        <p class="fs-3 fw-bold">ADMIN LOGIN</p>
+                        <img src="/static/images/admin_img.jpg" class="img-thumbnail" alt="">
                     </div>
                 </div>
                 <div class="col-md-6 right">
 
                     <div class="input-box">
-                        <header class="my-4 fs-5">Sign In</header>
-                        <form action="" method="post">
+                        <header class="my-4 fs-5">Admin Sign In</header>
+                        <form action="/admin-login" method="POST">
                             <div class="input-field">
                                 <input type="email" class="input" id="email" name="email" required>
                                 <label for="email">Email</label>
@@ -44,7 +44,6 @@
                             </div>
                         </form>
                         <div class="signin">
-                            <span>New user ? <a href="/register">Sign Up</a></span>
                             <h6 class="text-center text-success p-2 rounded">
                                 <%= message %>
                             </h6>

@@ -23,12 +23,13 @@ app.use(express.json())
 
 app.use('/static', express.static(path.join(__dirname, "public")))
 app.use("",require("./routes/router"))
+app.use(express.static("uploads"))
 
 
 //session
 app.use(session({
     secret : "my secret key",
-    saveUninitialized : false,
+    saveUninitialized : true,
     resave : false,
     store: MongoStore.create({ mongoUrl:process.env.DB_URI }),
     cookie:{

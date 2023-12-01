@@ -1,8 +1,27 @@
 const express = require("express")
 const router = express.Router()
+const session = require('express-session')
+const MongoStore = require("connect-mongo")
 const User = require('../models/users')
 const multer = require('multer')
 const fs = require('fs')
+
+router.use(session({
+    secret: "my secret key",
+    saveUninitialized: true,
+    resave: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URI }),
+    cookie: {
+        name: 'myCookie',
+        maxAge: 1000 * 60 * 60 * 2,
+        sameSite: true,
+    }
+}))
+
+router.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+});
 
 //image upload
 var storage = multer.diskStorage({
@@ -31,7 +50,70 @@ router.get('/register', (req, res) => {
 
 //route to get the home page
 router.get('/home', (req, res) => {
-    res.render('home', { title: "Home Page" })
+    if (req.session.user) {
+        res.render('home', { title: "Home Page", name: req.session.user.name });
+    } else {
+        res.render('user_login', { title: "User Login", message: "", errmsg: "Relogin needed" });
+    }
+});
+
+//route to post user register data to database
+router.post("/register", upload, async (req, res) => {
+    try {
+        if (req.body.password !== req.body.cpass) {
+            return res.render("user_register", { title: "User Register", message: "", errmsg: "Passsword is not matching." })
+        }
+
+        const existinguser = await User.findOne({ email: req.body.email })
+        if (existinguser) {
+            return res.render("user_register", { title: "User Register", message: "", errmsg: "Email already in use." })
+        }
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            image: req.file.filename,
+            password: req.body.password
+        })
+        await user.save()
+        res.render("user_login", { title: "User Login", message: "Successfull registration", errmsg: "" });
+    } catch (err) {
+        res.send("outside try error")
+        console.log(err)
+    }
+})
+
+//route to check login data in database and redirecting to home page
+router.post('/', async (req, res) => {
+    const user = await User.findOne({ email: req.body.email });
+    const password = req.body.password
+    if (!user) {
+        return res.render('user_login', { title: "User Login", message: "", errmsg: "No user found" });
+    }
+
+    if (password !== user.password) {
+        return res.render('user_login', { title: "User Login", message: "", errmsg: "Wrong password" });
+    }
+
+    if (req.body.password === user.password && req.body.email === user.email) {
+        req.session.user = user;
+        res.redirect("/home")
+    }
+
+});
+
+//route to logout from homepage
+router.get('/logout', (req, res) => {
+    res.clearCookie('myCookie');
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+            res.render('user_login', { title: "User Login", message: "logout successfully", errmsg: "" })
+        }
+    })
 })
 
 //route to get the admin login
@@ -39,42 +121,66 @@ router.get('/admin', (req, res) => {
     res.render('admin_login', { title: "Admin Login", message: '', errmsg: "" })
 })
 
-//route to get the admin dashboard
-router.get('/admin_dashboard', (req, res) => {
-    res.render('admin_dashboard', { title: "Admin Dashboard" })
-})
 
-//route to post user register data to database
-router.post("/register", upload , async (req,res)=>{
-    try{
-        if(req.body.password !== req.body.cpass){
-            return res.render("user_register",{title : "User Register" , message : "" , errmsg : "Passsword is not matching."})
+//route to post the data from admin login to databse for checking credentials
+router.post('/admin-login', async (req, res) => {
+    try {
+        const adminemail = "admin@gmail.com";
+        const adminpassword = "admin123";
+
+        const { email, password } = req.body;
+
+        if (email === adminemail && password === adminpassword) {
+            req.session.admin = { email: adminemail };
+            res.redirect("/admin_dashboard");
+        } else {
+            res.render("admin_login", { title: "Admin Login", message: "", errmsg: "Invalid Credentials" });
         }
-        
-        const existinguser = await User.findOne({ email:req.body.email })
-        if(existinguser){
-            return res.render("user_register",{title : "User Register" , message : "" , errmsg : "Email already in use."})
-        }
-        
-        const  user = new User({
-            name : req.body.name,
-            email : req.body.email,
-            phone : req.body.phone,
-            image : req.file.filename,
-            password : req.body.password
-        })
-        await user.save()
-        res.render("user_login",{ title : "User Login" , message : "Successfull registration" , errmsg : ""});
-    }catch (err) {
-        res.send("outside try error")
-        console.log(err)
+    } catch (error) {
+        console.error("Error in admin-login route:", error);
+        res.status(500).send("Internal Server Error");
     }
-})
+});
 
 
+//route to get the admin dashboard
+router.get('/admin_dashboard', async (req, res) => {
+    try {
+        if (req.session.admin) {
+            User.find().exec()
+                .then((users) => {
+                    res.render('admin_dashboard', { title: "Admin Dashboard", users : users , message : ""});
+                })
+                .catch((err) => {
+                    res.json({ message: err.message })
+                })
+        } else {
+            res.render('admin_login', { title: "Admin Login", message: "", errmsg: "Relogin needed" });
+        }
+    } catch (error) {
+        console.error("Error in admin_dashboard route:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
-
-
+//route to admin logout
+router.get('/admin-logout', async (req, res) => {
+    try {
+        res.clearCookie('myCookie');
+        req.session.destroy(function (err) {
+            if (err) {
+                console.error("Error during admin logout:", err);
+                res.status(500).send("Internal Server Error");
+            } else {
+                res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+                res.render('admin_login', { title: "Admin Login", message: "Logout successfully", errmsg: "" });
+            }
+        });
+    } catch (error) {
+        console.error("Error in admin-logout route:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 
 module.exports = router
