@@ -1,5 +1,82 @@
-<%- include("layout/header.ejs")%>
-
-
-
-<%- include("layout/footer.ejs")%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/static/stylesheets/user_register.css' type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container main">
+            <div class="row">
+                <div class="col-md-6 side-image">
+                    <!---      image     --->
+                    <div class="text">
+                        <img src="" width="50" class="img-thumbnail" alt="no image">
+                        <p>Join the community of developers <i>MERN Stack</i></p>
+                    </div>
+                </div>
+                <div class="col-md-6 right">
+                    <div class="input-box">
+                        <header class="my-4 fs-5">Sign Up</header>
+                        <form action="" method="post">
+                            <div class="input-field">
+                                <input type="text" class="input" id="name" name="name" required>
+                                <label for="name">Full Name</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="email" class="input" id="email" name="email" required>
+                                <label for="email">Email</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="tel" class="input" id="phone" name="phone" required>
+                                <label for="phone">Phone Number</label>
+                            </div>
+                            <label class="mx-2" for="image">Profile image</label>
+                            <div class="input-field mb-2">
+                                <input type="file" name="image" class="form-control form-control-sm" required>
+                            </div>
+                            <div class="input-field">
+                                <input type="password" class="input" id="pass" name="pass" required>
+                                <label for="pass">Password</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="password" class="input" id="cpass" name="cpass" required>
+                                <label for="cpass">Confirm Password</label>
+                            </div>
+                            <div class="input-field">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                        <div class="signin">
+                            <span>Already have an account ? <a href="/">Sign In</a></span>
+                            <h6 class="text-center text-success p-2 rounded">
+                                <%= message %>
+                            </h6>
+                            <h6 class="text-center text-danger p-2 rounded">
+                                <%= errmsg %>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+    </body>
+    </html>
+    

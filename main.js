@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const MongoStore = require("connect-mongo")
+const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 7000
