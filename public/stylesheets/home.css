@@ -1,0 +1,61 @@
+*{
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .device-size-display {
+    position: fixed;
+    top: 80px;
+    right: 10px;
+    background-color: rgba(170, 245, 84, 0.694);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 100;
+  }
+  
+  @media (min-width: 576px) {
+    #device-size::before {
+      content: 'XS / SM';
+    }
+  }
+  
+  @media (min-width: 768px) {
+    #device-size::before {
+      content: 'MD';
+    }
+  }
+  
+  @media (min-width: 992px) {
+    #device-size::before {
+      content: 'LG';
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    #device-size::before {
+      content: 'XL';
+    }
+  }
+  
+  body::before{
+    display: block;
+    content: "";
+    height: 30px;
+  }
+  
+  .custom-text-color {
+    color: #2b7ffe;
+  }
+  
+  @media (min-width: 768px) {
+    .news-input{
+        width: 50%;
+    }
+  }
