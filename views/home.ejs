@@ -7,6 +7,7 @@
     <title>
         <%= title %>
     </title>
+    <link rel="stylesheet" href="/static/stylesheets/home.css" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -15,9 +16,9 @@
     <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0f1923;">
         <div class="container">
-            <a href="/" class="navbar-brand">Valorant</a>
+            <a href="/" class="navbar-brand fs-4 fw-bold">VALORANT</a>
             <button class="navbar-toggler" data-bs-target="#my-nav" data-bs-toggle="collapse" aria-controls="my-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -39,8 +40,180 @@
             </div>
         </div>
     </nav>
+    <section id="one">
+        <h2>Welcome <%= name %></h2>
+    </section>
+    <section id="two" class="p-3">
+        <div class="container p-3">
+            <h1 class="fw-bold text-light mx-5" style="font-family: 'ValorantFont', sans-serif;">AGENTS</h1>
+            <div class="row" style="background-color: #ff4656; height: 3px;">
+                <hr>
+            </div>
+            <div class="row p-5">
+                <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
 
-    <h1><%= name %></h1>
+                      <div class="carousel-item active">
+                        <img src="/static/images/carousel/Astra.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">ASTRA</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Breach.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">BREACH</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Brim.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">BRIMSTONE</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Chamber.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">CHAMBER</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Cypher.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">CYPHER</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Deadlock.jpeg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">DEADLOCK</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Fade.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">FADE</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Gekko.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: rgb(239, 240, 221);">GEKKO</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Harbor.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">HARBOR</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Iso.jpeg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #a486e0;">ISO</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Jet.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #e0f0f1;">JET</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Kayo.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">KAY/O</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Killjoy.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">KILLJOY</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Neon.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">NEON</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Omen.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">OMEN</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Pheonix.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #fcf7bd;">PHEONIX</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Raze.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">RAZE</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Reyna.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">REYNA</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Sage.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">SAGE</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Skye.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">SKYE</h1>
+                        </div>
+                      </div>
+
+                      <div class="carousel-item">
+                        <img src="/static/images/carousel/Sova.jpg" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="text fw-bold fs-1 position-absolute top-50 start-50 translate-middle" style="color: #ff4656;">SOVA</h1>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+            </div>
+        </div>
+    </section>
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"

@@ -1,0 +1,38 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+
+body {
+    font-family: 'Anton', sans-serif;
+}
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+#one {
+    height: 100vh;
+    background: url('../images/logobg.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    color: #fff;
+}
+
+#two {
+    background-color: #0f1923;
+}
+
+h1 , h2{
+    font-family: 'Anton', sans-serif;
+}
