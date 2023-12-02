@@ -238,4 +238,52 @@ router.get('/edit/:id', (req,res)=>{
     })
 })
 
+//route to post the admin user edit / update data in to database
+router.post('/update/:id', upload , (req,res)=>{
+    const id = req.params.id
+    let new_img = ""
+
+    if(req.file){
+        new_img = req.file.filename
+        try{
+            fs.unlinkSync("./uploads/"+req.body.old_image)
+        }catch(err){
+            console.log(err)
+        }
+    }else{
+        new_img = req.body.old_image
+    }
+
+    User.findByIdAndUpdate(id , {
+        name : req.body.name,
+        email : req.body.email,
+        phone : req.body.phone,
+        password : req.body.password,
+        image : new_img,
+    })
+    .then(()=>{
+        if(req.session.admin){
+            req.session.message = {
+                type : "success",
+                message : "User updated Successfully.."
+            }
+            res.redirect('/admin_dashboard')
+        }else{
+            res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Rwlogin needed"})
+        }
+    })
+    .catch((err)=>{
+        if(req.session.admin){
+            req.session.message = {
+                type : "danger",
+                message : "Error in user updation!"
+            }
+            res.redirect('/admin_dashboard')
+            console.log(err)
+        }else{
+            res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Rwlogin needed"})
+        }
+    })
+})
+
 module.exports = router
