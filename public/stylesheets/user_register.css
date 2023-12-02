@@ -4,8 +4,23 @@
 *{
     font-family: 'Poppins', sans-serif;
 }
-.wrapper{
-    background: #ececec;
+.wrapper {
+    background-image:-webkit-linear-gradient(top, 
+    rgba(0,0,0,0.9) 0%, 
+    rgba(0,0,0,0) 20%,
+    rgba(0,0,0,0) 80%,
+    rgba(0,0,0,0.9) 100%
+  ),
+  -webkit-linear-gradient(left, 
+    rgba(0,0,0,0.9) 0%, 
+    rgba(0,0,0,0) 20%,
+    rgba(0,0,0,0) 80%,
+    rgba(0,0,0,0.9) 100%
+  ), url("../images/Wallpaperbg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    /* background: #c17f7f; */
     padding: 0 20px 0 20px;
 }
 .main{
