@@ -5,6 +5,7 @@ const MongoStore = require("connect-mongo")
 const User = require('../models/users')
 const multer = require('multer')
 const fs = require('fs')
+const path = require('path')
 
 router.use(session({
     secret: "my secret key",
@@ -67,11 +68,19 @@ router.get('/home', (req, res) => {
 router.post("/register", upload, async (req, res) => {
     try {
         if (req.body.password !== req.body.cpass) {
+            if (req.file) {
+                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
+                fs.unlinkSync(imagePath);
+            }
             return res.render("user_register", { title: "User Register", message: "", errmsg: "Passsword is not matching." })
         }
 
         const existinguser = await User.findOne({ email: req.body.email })
         if (existinguser) {
+            if (req.file) {
+                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
+                fs.unlinkSync(imagePath);
+            }
             return res.render("user_register", { title: "User Register", message: "", errmsg: "Email already in use." })
         }
 
@@ -85,7 +94,7 @@ router.post("/register", upload, async (req, res) => {
         await user.save()
         res.render("user_login", { title: "User Login", message: "Successfull registration", errmsg: "" });
     } catch (err) {
-        res.send("outside try error")
+        res.status(500).send("Internal Server Error");
         console.log(err)
     }
 })
@@ -270,7 +279,6 @@ router.post('/update/:id', upload , (req,res)=>{
                 type : "success",
                 message : "User updated Successfully.."
             }
-            console.log("session message : ",req.session.message)
             res.redirect('/admin_dashboard')
         }else{
             res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Relogin needed"})
