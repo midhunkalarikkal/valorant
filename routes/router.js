@@ -18,6 +18,12 @@ router.use(session({
     }
 }))
 
+router.use((req,res,next)=>{
+    res.locals.message = req.session.message
+    delete req.session.message
+    next()
+})
+
 router.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
@@ -149,7 +155,7 @@ router.get('/admin_dashboard', async (req, res) => {
         if (req.session.admin) {
             User.find().exec()
                 .then((users) => {
-                    res.render('admin_dashboard', { title: "Admin Dashboard", users : users , message : ""});
+                    res.render('admin_dashboard', { title: "Admin Dashboard", users : users});
                 })
                 .catch((err) => {
                     res.json({ message: err.message })
@@ -224,11 +230,7 @@ router.get('/edit/:id', (req,res)=>{
     User.findById(id)
     .then((user)=>{
         if(user == null){
-            if(req.session.admin){
                 res.redirect('/admin_dashboard')
-            }else{
-                res.render('admin_login',{title : "Admin Login", message : "", errmsg : 'Relogin needed!'})
-            }
         }else{
             res.render("admin_edit_user",{title : "Admin Edit User", user : user})
         }
@@ -248,7 +250,8 @@ router.post('/update/:id', upload , (req,res)=>{
         try{
             fs.unlinkSync("./uploads/"+req.body.old_image)
         }catch(err){
-            console.log(err)
+            console.error('Error deleting old image:', err);
+            return res.status(500).send("Internal Server Error");
         }
     }else{
         new_img = req.body.old_image
@@ -267,9 +270,10 @@ router.post('/update/:id', upload , (req,res)=>{
                 type : "success",
                 message : "User updated Successfully.."
             }
+            console.log("session message : ",req.session.message)
             res.redirect('/admin_dashboard')
         }else{
-            res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Rwlogin needed"})
+            res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Relogin needed"})
         }
     })
     .catch((err)=>{
@@ -280,6 +284,38 @@ router.post('/update/:id', upload , (req,res)=>{
             }
             res.redirect('/admin_dashboard')
             console.log(err)
+        }else{
+            res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Rwlogin needed"})
+        }
+    })
+})
+
+//route to get the admin user delete
+router.get('/delete/:id',(req,res)=>{
+    let id = req.params.id
+    User.findByIdAndDelete(id)
+    .then((result)=>{
+        if(result.image && result.image != ""){
+            try{
+                fs.unlinkSync("./uploads/"+result.image)
+            }catch(err){
+                res.status(500).send(err.message);
+            }
+        }
+            req.session.message = {
+                type : "success",
+                message : "User deleted successfuly.."
+            }
+            res.redirect('/admin_dashboard')
+    })
+    .catch((err)=>{
+        if(req.session.admin){
+            req.session.message = {
+                type : "danger",
+                message : "Error in user deletion!"
+            }
+            res.redirect('/admin_dashboard')
+            console.log("Error in user deleting ",err)
         }else{
             res.render("admin_login",{titlle : "Admin Login" , message : "", errmsg : "Rwlogin needed"})
         }
