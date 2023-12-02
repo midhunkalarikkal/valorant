@@ -186,7 +186,7 @@ router.get('/admin-logout', async (req, res) => {
 router.get('/add-user', async (req,res)=>{
     try{
         if(req.session.admin){
-            res.render("admin_add_user",{title : "Add User"})
+            res.render("admin_add_user",{title : "Admin add User"})
         }else{
             res.render('admin_login', { title: "Admin Login", message: "", errmsg: "Relogin needed" });
         }
@@ -216,6 +216,26 @@ router.post('/add', upload , async (req,res)=>{
         console.error("Error in admin-add-user route:", error);
         res.status(500).send("Internal Server Error");
     }
+})
+
+//route to get the admin user edit page
+router.get('/edit/:id', (req,res)=>{
+    let id = req.params.id
+    User.findById(id)
+    .then((user)=>{
+        if(user == null){
+            if(req.session.admin){
+                res.redirect('/admin_dashboard')
+            }else{
+                res.render('admin_login',{title : "Admin Login", message : "", errmsg : 'Relogin needed!'})
+            }
+        }else{
+            res.render("admin_edit_user",{title : "Admin Edit User", user : user})
+        }
+    })
+    .catch((err) => {
+        res.redirect('/admin_dashboard')
+    })
 })
 
 module.exports = router
