@@ -182,5 +182,40 @@ router.get('/admin-logout', async (req, res) => {
     }
 });
 
+//route to get user adding page
+router.get('/add-user', async (req,res)=>{
+    try{
+        if(req.session.admin){
+            res.render("admin_add_user",{title : "Add User"})
+        }else{
+            res.render('admin_login', { title: "Admin Login", message: "", errmsg: "Relogin needed" });
+        }
+    }catch(err){
+        console.error("Error in admin-add-user route:", error);
+        res.status(500).send("Internal Server Error");
+    }
+})
+
+//route to post new user data to databse
+router.post('/add', upload , async (req,res)=>{
+    try{
+    const user = new User({
+        name : req.body.name,
+        email : req.body.email,
+        phone : req.body.phone,
+        password : req.body.password,
+        image : req.file.filename,
+    })
+    await user.save()
+            req.session.message = {
+                type : "success",
+                message : "User added successfully.."
+            }
+            res.redirect("/admin_dashboard")
+        }catch(error){
+        console.error("Error in admin-add-user route:", error);
+        res.status(500).send("Internal Server Error");
+    }
+})
 
 module.exports = router
