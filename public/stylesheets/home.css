@@ -20,14 +20,34 @@ html {
     background: #FF0000;
 }
 
-#one {
+#one{
     height: 100vh;
-    background: url('../images/logobg.jpg') center/cover no-repeat;
     display: flex;
     align-items: start;
     justify-content: center;
     color: #fff;
 }
+
+.sign-in-image {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 2px solid #ff4656;
+}
+
+@media (max-width : 767px) {
+    #one{
+        background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
+    }
+}
+
+@media (min-width: 768px) {
+    #one{
+        background: url('../images/logobg.jpg') center/cover no-repeat;
+    }
+  }
 
 #two {
     background-color: #0f1923;

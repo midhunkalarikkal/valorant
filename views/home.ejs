@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0f1923;">
+    <nav class="navbar navbar-expand-lg navbar-dark p-3" style="background-color: #0f1923;">
         <div class="container">
             <a href="/" class="navbar-brand fs-4 fw-bold">VALORANT</a>
             <button class="navbar-toggler" data-bs-target="#my-nav" data-bs-toggle="collapse" aria-controls="my-nav"
@@ -27,13 +27,16 @@
             <div id="my-nav" class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item active">
-                        <a href="/" class="nav-link"><i class="fas fa-home me-1"></i>Home</a>
+                        <a href="#one" class="nav-link"><img src="<%= image%>" class="sign-in-image"><%= name %></a>
                     </li>
                     <li class="nav-item active">
-                        <a href="/add" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Maps</a>
+                        <a href="#" class="nav-link"><i class="fas fa-home me-1"></i>Home</a>
                     </li>
                     <li class="nav-item active">
-                        <a href="#" class="nav-link"><i class="fas fa-globe me-1"></i>About</a>
+                        <a href="#two" class="nav-link"><i class="fas fa-person me-1"></i>Agents</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="#maps" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Maps</a>
                     </li>
                     <li class="nav-item active">
                         <a href="/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
@@ -42,9 +45,17 @@
             </div>
         </div>
     </nav>
-    <section id="one">
-        <h2>Welcome <%= name %>
-        </h2>
+    <section id="one" class="d-flex text-center">
+        <!-- <div class="container p-3 section-one-container">
+            <div class="row d-flex flex-column align-items-center">
+                <div class="col-md-6">
+                    <img src="<%= image %>" class="img-fluid custom-image" alt="User Image">
+                </div>
+                <div class="col-md-6">
+                    <h4 class="section-one-text" style="color: #f9eff0;">Welcome <%= name %></h5>
+                </div>
+            </div>
+        </div> -->
     </section>
     <section id="two" class="p-3">
         <div class="container p-3">

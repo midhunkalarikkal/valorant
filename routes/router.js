@@ -59,7 +59,7 @@ router.get('/register', (req, res) => {
 //route to get the home page
 router.get('/home', (req, res) => {
     if (req.session.user) {
-        res.render('home', { title: "Home Page", name: req.session.user.name });
+        res.render('home', { title: "Home Page", name: req.session.user.name , image : req.session.user.image });
     } else {
         res.render('user_login', { title: "User Login", message: "", errmsg: "Relogin needed" });
     }
