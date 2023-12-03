@@ -338,6 +338,20 @@ router.get('/delete/:id', (req, res) => {
                 res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
             }
         })
+    })
+    
+    //route to return back from edit page to admin dashboard
+    router.get('/editback',(req,res)=>{
+        try{
+            if(!req.session.admin){
+                res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+            }else{
+                res.redirect('/admin_dashboard')
+            }
+        }catch(err){
+            res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+            console.log(err)
+        }
 })
 
 module.exports = router
