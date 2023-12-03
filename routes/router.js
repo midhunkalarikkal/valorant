@@ -222,6 +222,15 @@ router.get('/add-user', async (req, res) => {
 //route to post new user data to databse
 router.post('/add', upload, async (req, res) => {
     try {
+        const existinguser = await User.findOne({ email: req.body.email });
+        if (existinguser) {
+            // If the email exists for another user, redirect back to the edit page
+            if (req.file) {
+                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
+                fs.unlinkSync(imagePath);
+            }
+            return res.redirect('/add-user');
+        }
         //Hashing the password
         const hpass = await bcrypt.hash(req.body.password, 10)
         const user = new User({
@@ -251,7 +260,7 @@ router.get('/edit/:id', (req, res) => {
             if (user == null) {
                 res.redirect('/admin_dashboard')
             } else {
-                res.render("admin_edit_user", { title: "Admin Edit User", user: user })
+                res.render("admin_edit_user", { title: "Admin Edit User", user : user})
             }
         })
         .catch((err) => {
@@ -260,53 +269,51 @@ router.get('/edit/:id', (req, res) => {
 })
 
 //route to post the admin user edit / update data in to database
-router.post('/update/:id', upload, (req, res) => {
-    const id = req.params.id
-    let new_img = ""
+router.post('/update/:id', upload, async (req, res) => {
+    const id = req.params.id;
+    let new_img = "";
 
     if (req.file) {
-        new_img = req.file.filename
+        new_img = req.file.filename;
         try {
-            fs.unlinkSync("./uploads/" + req.body.old_image)
+            fs.unlinkSync("./uploads/" + req.body.old_image);
         } catch (err) {
             console.error('Error deleting old image:', err);
             return res.status(500).send("Internal Server Error");
         }
     } else {
-        new_img = req.body.old_image
+        new_img = req.body.old_image;
     }
 
-    User.findByIdAndUpdate(id, {
-        name: req.body.name,
-        email: req.body.email,
-        phone: req.body.phone,
-        // password : req.body.password,
-        image: new_img,
-    })
-        .then(() => {
-            if (req.session.admin) {
-                req.session.message = {
-                    type: "success",
-                    message: "User updated Successfully.."
-                }
-                res.redirect('/admin_dashboard')
-            } else {
-                res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Relogin needed" })
-            }
-        })
-        .catch((err) => {
-            if (req.session.admin) {
-                req.session.message = {
-                    type: "danger",
-                    message: "Error in user updation!"
-                }
-                res.redirect('/admin_dashboard')
-                console.log(err)
-            } else {
-                res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
-            }
-        })
-})
+    try {
+        const existinguser = await User.findOne({ email: req.body.email });
+        if (existinguser && existinguser._id.toString() !== id) {
+            // If the email exists for another user, redirect back to the edit page
+            return res.redirect(`/edit/${id}`);
+        }
+
+        await User.findByIdAndUpdate(id, {
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            image: new_img,
+        });
+
+        if (req.session.admin) {
+            req.session.message = {
+                type: "success",
+                message: "User updated successfully."
+            };
+            res.redirect('/admin_dashboard');
+        } else {
+            res.render("admin_login", { title: "Admin Login", message: "", errmsg: "Relogin needed" });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 
 //route to get the admin user delete
 router.get('/delete/:id', (req, res) => {
