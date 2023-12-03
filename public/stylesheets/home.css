@@ -33,6 +33,20 @@ html {
     background-color: #0f1923;
 }
 
-h1 , h2{
+h1 , h2 , h3 , h4 , h5 , h5{
     font-family: 'Anton', sans-serif;
+}
+
+.country-flag{
+    max-width: 30px;
+    max-height: 18px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    visibility: hidden;
+}
+
+span , h2{
+    color: #ff4656;
 }
