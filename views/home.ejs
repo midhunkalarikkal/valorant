@@ -26,8 +26,10 @@
             </button>
             <div id="my-nav" class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item active">
-                        <a href="#one" class="nav-link"><img src="<%= image%>" class="sign-in-image"><%= name %></a>
+                    <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <a href="#one" class="nav-link"><img src="<%= image%>" class="sign-in-image">
+                            <%= name %>
+                        </a>
                     </li>
                     <li class="nav-item active">
                         <a href="#" class="nav-link"><i class="fas fa-home me-1"></i>Home</a>
@@ -46,16 +48,7 @@
         </div>
     </nav>
     <section id="one" class="d-flex text-center">
-        <!-- <div class="container p-3 section-one-container">
-            <div class="row d-flex flex-column align-items-center">
-                <div class="col-md-6">
-                    <img src="<%= image %>" class="img-fluid custom-image" alt="User Image">
-                </div>
-                <div class="col-md-6">
-                    <h4 class="section-one-text" style="color: #f9eff0;">Welcome <%= name %></h5>
-                </div>
-            </div>
-        </div> -->
+
     </section>
     <section id="two" class="p-3">
         <div class="container p-3">
@@ -76,7 +69,10 @@
                                     <h5 class="text text-light">Origin : <span>Ghana <img
                                                 src="/static/images/Country/Ghana.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>Ghanaian Agent <span class="text fw-bold">Astra</span> harnesses the energies of the cosmos to reshape battlefields to her whim. With full command of her astral form and a talent for deep strategic foresight, she’s always eons ahead of her enemy’s next move.</i></p>
+                                    <p class="text text-light"><i>Ghanaian Agent <span class="text fw-bold">Astra</span>
+                                            harnesses the energies of the cosmos to reshape battlefields to her whim.
+                                            With full command of her astral form and a talent for deep strategic
+                                            foresight, she’s always eons ahead of her enemy’s next move.</i></p>
                                 </div>
                             </div>
                         </div>
@@ -91,8 +87,10 @@
                                     <h5 class="text text-light">Origin : <span>Sweeden <img
                                                 src="/static/images/Country/Sweeden.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        <span class="text fw-bold">Breach</span>, the bionic Swede, fires powerful, targeted kinetic blasts to aggressively clear a path through enemy ground. The damage and disruption he inflicts ensures no fight is ever fair.</i>
+                                    <p class="text text-light"><i>
+                                            <span class="text fw-bold">Breach</span>, the bionic Swede, fires powerful,
+                                            targeted kinetic blasts to aggressively clear a path through enemy ground.
+                                            The damage and disruption he inflicts ensures no fight is ever fair.</i>
                                     </p>
                                 </div>
                             </div>
@@ -108,8 +106,11 @@
                                     <h5 class="text text-light">Origin : <span>United States <img
                                                 src="/static/images/Country/Us.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Joining from the U.S.A., <span class="text fw-bold">Brimstone's</span> orbital arsenal ensures his squad always has the advantage. His ability to deliver utility precisely and from a distance make him an unmatched boots-on-the-ground commander.</i>
+                                    <p class="text text-light"><i>
+                                            Joining from the U.S.A., <span class="text fw-bold">Brimstone's</span>
+                                            orbital arsenal ensures his squad always has the advantage. His ability to
+                                            deliver utility precisely and from a distance make him an unmatched
+                                            boots-on-the-ground commander.</i>
                                     </p>
                                 </div>
                             </div>
@@ -125,8 +126,11 @@
                                     <h5 class="text text-light">Origin : <span>France <img
                                                 src="/static/images/Country/France.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Well-dressed and well-armed, French weapons designer <span class="text fw-bold">Chamber</span> expels aggressors with deadly precision. He leverages his custom arsenal to hold the line and pick off enemies from afar, with a contingency built for every plan.</i>
+                                    <p class="text text-light"><i>
+                                            Well-dressed and well-armed, French weapons designer <span
+                                                class="text fw-bold">Chamber</span> expels aggressors with deadly
+                                            precision. He leverages his custom arsenal to hold the line and pick off
+                                            enemies from afar, with a contingency built for every plan.</i>
                                     </p>
                                 </div>
                             </div>
@@ -142,8 +146,10 @@
                                     <h5 class="text text-light">Origin : <span>Morocco <img
                                                 src="/static/images/Country/Morocco.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        The Moroccan information broker, <span class="text fw-bold">Cypher</span> is a one-man surveillance network who keeps tabs on the enemy’s every move. No secret is safe. No maneuver goes unseen. Cypher is always watching.</i>
+                                    <p class="text text-light"><i>
+                                            The Moroccan information broker, <span class="text fw-bold">Cypher</span> is
+                                            a one-man surveillance network who keeps tabs on the enemy’s every move. No
+                                            secret is safe. No maneuver goes unseen. Cypher is always watching.</i>
                                     </p>
                                 </div>
                             </div>
@@ -159,8 +165,11 @@
                                     <h5 class="text text-light">Origin : <span>Norway <img
                                                 src="/static/images/Country/Norway.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Norwegian operative <span class="text fw-bold">Deadlock</span> deploys an array of cutting-edge nanowire to secure the battlefield from even the most lethal assault. No one escapes her vigilant watch, nor survives her unyielding ferocity.</i>
+                                    <p class="text text-light"><i>
+                                            Norwegian operative <span class="text fw-bold">Deadlock</span> deploys an
+                                            array of cutting-edge nanowire to secure the battlefield from even the most
+                                            lethal assault. No one escapes her vigilant watch, nor survives her
+                                            unyielding ferocity.</i>
                                     </p>
                                 </div>
                             </div>
@@ -176,8 +185,11 @@
                                     <h5 class="text text-light">Origin : <span>Turkiye <img
                                                 src="/static/images/Country/Turkiye.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                       Turkish bounty hunter  <span class="text fw-bold">Fade</span> unleashes the power of raw nightmare to seize enemy secrets. Attuned with terror itself, she hunts down targets and reveals their deepest fears - before crushing them in the dark.</i>
+                                    <p class="text text-light"><i>
+                                            Turkish bounty hunter <span class="text fw-bold">Fade</span> unleashes the
+                                            power of raw nightmare to seize enemy secrets. Attuned with terror itself,
+                                            she hunts down targets and reveals their deepest fears - before crushing
+                                            them in the dark.</i>
                                     </p>
                                 </div>
                             </div>
@@ -193,8 +205,10 @@
                                     <h5 class="text text-light">Origin : <span>United States <img
                                                 src="/static/images/Country/Us.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        <span class="text fw-bold">Gekko</span> the Angeleno leads a tight-knit crew of calamitous creatures. His buddies bound forward, scattering enemies out of the way, with Gekko chasing them down to regroup and go again.</i>
+                                    <p class="text text-light"><i>
+                                            <span class="text fw-bold">Gekko</span> the Angeleno leads a tight-knit crew
+                                            of calamitous creatures. His buddies bound forward, scattering enemies out
+                                            of the way, with Gekko chasing them down to regroup and go again.</i>
                                     </p>
                                 </div>
                             </div>
@@ -205,13 +219,16 @@
                             <div class="desc">
                                 <div class="row p-2">
                                     <h2 class="text text-lg-lg text-md-md text-sm-sm text-xs-xs">HARBOR</h2>
-                                    <h5 class="text text-light">Type : <span >Controller</span>
+                                    <h5 class="text text-light">Type : <span>Controller</span>
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>India <img
                                                 src="/static/images/Country/India.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Hailing from India's coast, <span class="text fw-bold">Harbor</span> storms the field wielding ancient technology with dominion over water. He unleashes frothing rapids and crushing waves to shield his allies, or pummel those that oppose him.</i>
+                                    <p class="text text-light"><i>
+                                            Hailing from India's coast, <span class="text fw-bold">Harbor</span> storms
+                                            the field wielding ancient technology with dominion over water. He unleashes
+                                            frothing rapids and crushing waves to shield his allies, or pummel those
+                                            that oppose him.</i>
                                     </p>
                                 </div>
                             </div>
@@ -227,8 +244,11 @@
                                     <h5 class="text text-light">Origin : <span>China <img
                                                 src="/static/images/Country/China.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Chinese fixer for hire <span class="text fw-bold">Iso</span> goes into a flow state to dismantle the opposition. Reconfiguring ambient energy into bulletproof protection, he advances with focus towards his next duel to the death.</i>
+                                    <p class="text text-light"><i>
+                                            Chinese fixer for hire <span class="text fw-bold">Iso</span> goes into a
+                                            flow state to dismantle the opposition. Reconfiguring ambient energy into
+                                            bulletproof protection, he advances with focus towards his next duel to the
+                                            death.</i>
                                     </p>
                                 </div>
                             </div>
@@ -242,10 +262,13 @@
                                     <h5 class="text text-light">Type : <span>Duelist</span>
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>South Korea <img
-                                                src="/static/images/Country/Southkorea.png" class="img-fluid country-flag"
-                                                alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Representing her home country of South Korea, <span class="text fw-bold">Jett's</span> agile and evasive fighting style lets her take risks no one else can. She runs circles around every skirmish, cutting enemies before they even know what hit them.</i>
+                                                src="/static/images/Country/Southkorea.png"
+                                                class="img-fluid country-flag" alt=""></span></h5>
+                                    <p class="text text-light"><i>
+                                            Representing her home country of South Korea, <span
+                                                class="text fw-bold">Jett's</span> agile and evasive fighting style lets
+                                            her take risks no one else can. She runs circles around every skirmish,
+                                            cutting enemies before they even know what hit them.</i>
                                     </p>
                                 </div>
                             </div>
@@ -260,8 +283,11 @@
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>Alternate Timeline Earth </span></h5>
                                     <p class="text text-light"><i>
-                                        <span class="text fw-bold">KAY/O </span>is a machine of war built for a single purpose: neutralizing radiants. His power to suppress enemy abilities dismantles his opponents' capacity to fight back, securing him and his allies the ultimate edge.
-                                    </i>
+                                            <span class="text fw-bold">KAY/O </span>is a machine of war built for a
+                                            single purpose: neutralizing radiants. His power to suppress enemy abilities
+                                            dismantles his opponents' capacity to fight back, securing him and his
+                                            allies the ultimate edge.
+                                        </i>
                                     </p>
                                 </div>
                             </div>
@@ -277,8 +303,11 @@
                                     <h5 class="text text-light">Origin : <span>Germany <img
                                                 src="/static/images/Country/Germany.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        The genius of Germany, <span class="text fw-bold">Killjoy</span> effortlessly secures key battlefield positions with her arsenal of inventions. If their damage doesn't take her enemies out, the debuff her robots provide will make short work of them.</i>
+                                    <p class="text text-light"><i>
+                                            The genius of Germany, <span class="text fw-bold">Killjoy</span>
+                                            effortlessly secures key battlefield positions with her arsenal of
+                                            inventions. If their damage doesn't take her enemies out, the debuff her
+                                            robots provide will make short work of them.</i>
                                     </p>
                                 </div>
                             </div>
@@ -292,10 +321,13 @@
                                     <h5 class="text text-light">Type : <span>Duelist</span>
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>Philippines <img
-                                                src="/static/images/Country/Philippines.png" class="img-fluid country-flag"
-                                                alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        	Filipino Agent, <span class="text fw-bold">Neon</span>, surges forward at shocking speeds, discharging bursts of bioelectric radiance as fast as her body generates it. She races ahead to catch enemies off guard, then strikes them down quicker than lightning.</i>
+                                                src="/static/images/Country/Philippines.png"
+                                                class="img-fluid country-flag" alt=""></span></h5>
+                                    <p class="text text-light"><i>
+                                            Filipino Agent, <span class="text fw-bold">Neon</span>, surges forward at
+                                            shocking speeds, discharging bursts of bioelectric radiance as fast as her
+                                            body generates it. She races ahead to catch enemies off guard, then strikes
+                                            them down quicker than lightning.</i>
                                     </p>
                                 </div>
                             </div>
@@ -309,8 +341,11 @@
                                     <h5 class="text text-light">Type : <span>Controller</span>
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>Unknown </span></h5>
-                                    <p class="text text-light"><i>	
-                                         A phantom of a memory, <span class="text fw-bold">Omen</span> hunts in the shadows. He renders enemies blind, teleports across the field, then lets paranoia take hold as his foe scrambles to learn where he might strike next.</i>
+                                    <p class="text text-light"><i>
+                                            A phantom of a memory, <span class="text fw-bold">Omen</span> hunts in the
+                                            shadows. He renders enemies blind, teleports across the field, then lets
+                                            paranoia take hold as his foe scrambles to learn where he might strike
+                                            next.</i>
                                     </p>
                                 </div>
                             </div>
@@ -326,8 +361,11 @@
                                     <h5 class="text text-light">Origin : <span>United Kingdom <img
                                                 src="/static/images/Country/Uk.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Hailing from the U.K., <span class="text fw-bold">Pheonix's</span> star power shines through in his fighting style, igniting the battlefield with flash and flare. Whether he's got backup or not, he'll rush into a fight on his own terms.</i>
+                                    <p class="text text-light"><i>
+                                            Hailing from the U.K., <span class="text fw-bold">Pheonix's</span> star
+                                            power shines through in his fighting style, igniting the battlefield with
+                                            flash and flare. Whether he's got backup or not, he'll rush into a fight on
+                                            his own terms.</i>
                                     </p>
                                 </div>
                             </div>
@@ -343,9 +381,12 @@
                                     <h5 class="text text-light">Origin : <span>Brazil <img
                                                 src="/static/images/Country/Brazil.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        <span class="text fw-bold">Raze</span> explodes out of Brazil with her big personality and big guns. With her blunt-force-trauma playstyle, she excels at flushing entrenched enemies and clearing tight spaces with a generous dose of “boom.”
-                                           </i>
+                                    <p class="text text-light"><i>
+                                            <span class="text fw-bold">Raze</span> explodes out of Brazil with her big
+                                            personality and big guns. With her blunt-force-trauma playstyle, she excels
+                                            at flushing entrenched enemies and clearing tight spaces with a generous
+                                            dose of “boom.”
+                                        </i>
                                     </p>
                                 </div>
                             </div>
@@ -361,8 +402,11 @@
                                     <h5 class="text text-light">Origin : <span>Mexico <img
                                                 src="/static/images/Country/Mexico.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Forged in the heart of Mexico, <span class="text fw-bold">Reyna</span> dominates single combat, popping off with each kill she scores. Her capability is only limited by her raw skill, making her highly dependent on performance.</i>
+                                    <p class="text text-light"><i>
+                                            Forged in the heart of Mexico, <span class="text fw-bold">Reyna</span>
+                                            dominates single combat, popping off with each kill she scores. Her
+                                            capability is only limited by her raw skill, making her highly dependent on
+                                            performance.</i>
                                     </p>
                                 </div>
                             </div>
@@ -378,8 +422,11 @@
                                     <h5 class="text text-light">Origin : <span>China <img
                                                 src="/static/images/Country/China.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        	The bastion of China, <span class="text fw-bold">Sage</span> creates safety for herself and her team wherever she goes. Able to revive fallen friends and stave off aggressive pushes, she provides a calm center to a hellish fight.</i>
+                                    <p class="text text-light"><i>
+                                            The bastion of China, <span class="text fw-bold">Sage</span> creates safety
+                                            for herself and her team wherever she goes. Able to revive fallen friends
+                                            and stave off aggressive pushes, she provides a calm center to a hellish
+                                            fight.</i>
                                     </p>
                                 </div>
                             </div>
@@ -393,10 +440,13 @@
                                     <h5 class="text text-light">Type : <span>Initiator</span>
                                     </h5>
                                     <h5 class="text text-light">Origin : <span>Australia <img
-                                                src="/static/images/Country/Australia.png" class="img-fluid country-flag"
-                                                alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        	Hailing from Australia, <span class="text fw-bold">Skye</span> and her band of beasts trail-blaze the way through hostile territory. With her creations hampering the enemy, and her power to heal others, the team is strongest and safest by Skye's side.</i>
+                                                src="/static/images/Country/Australia.png"
+                                                class="img-fluid country-flag" alt=""></span></h5>
+                                    <p class="text text-light"><i>
+                                            Hailing from Australia, <span class="text fw-bold">Skye</span> and her band
+                                            of beasts trail-blaze the way through hostile territory. With her creations
+                                            hampering the enemy, and her power to heal others, the team is strongest and
+                                            safest by Skye's side.</i>
                                     </p>
                                 </div>
                             </div>
@@ -412,8 +462,11 @@
                                     <h5 class="text text-light">Origin : <span>Russia <img
                                                 src="/static/images/Country/Russia.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Born from the eternal winter of Russia's tundra, <span class="text fw-bold">Sova</span> tracks, finds, and eliminates enemies with ruthless efficiency and precision. His custom bow and incredible scouting abilities ensure that even if you run, you cannot hide.</i>
+                                    <p class="text text-light"><i>
+                                            Born from the eternal winter of Russia's tundra, <span
+                                                class="text fw-bold">Sova</span> tracks, finds, and eliminates enemies
+                                            with ruthless efficiency and precision. His custom bow and incredible
+                                            scouting abilities ensure that even if you run, you cannot hide.</i>
                                     </p>
                                 </div>
                             </div>
@@ -429,8 +482,11 @@
                                     <h5 class="text text-light">Origin : <span>United States <img
                                                 src="/static/images/Country/Us.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        The American chemist, <span class="text fw-bold">Viper</span> deploys an array of poisonous chemical devices to control the battlefield and choke the enemy's vision. If the toxins don't kill her prey, her mind games surely will.</i>
+                                    <p class="text text-light"><i>
+                                            The American chemist, <span class="text fw-bold">Viper</span> deploys an
+                                            array of poisonous chemical devices to control the battlefield and choke the
+                                            enemy's vision. If the toxins don't kill her prey, her mind games surely
+                                            will.</i>
                                     </p>
                                 </div>
                             </div>
@@ -446,8 +502,11 @@
                                     <h5 class="text text-light">Origin : <span>Japan <img
                                                 src="/static/images/Country/Japan.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light"><i>	
-                                        Japanese native <span class="text fw-bold">Yoru</span> rips holes straight through reality to infiltrate enemy lines unseen. Using deception and aggression in equal measure, he gets the drop on each target before they know where to look.</i>
+                                    <p class="text text-light"><i>
+                                            Japanese native <span class="text fw-bold">Yoru</span> rips holes straight
+                                            through reality to infiltrate enemy lines unseen. Using deception and
+                                            aggression in equal measure, he gets the drop on each target before they
+                                            know where to look.</i>
                                     </p>
                                 </div>
                             </div>
@@ -468,6 +527,29 @@
             </div>
         </div>
     </section>
+
+    <!--modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0f1923;">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: rgb(255, 255, 255);">My Profile</h1>
+                    <button type="button" class="btn-close" style="background-color: #ffffff;" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="<%= image %>" class="modal-image" alt="">
+                    <h6>Logined as : <%= name %>
+                    </h6>
+                    <h6>Email id : <%= email %>
+                    </h6>
+                </div>
+                <div class="modal-footer" style="background-color:#0f1923;">
+                    <button type="button" class="btn btn-secondary" style="background-color:#ff4656;" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal-->
 
 
 

@@ -37,6 +37,13 @@ html {
     border: 2px solid #ff4656;
 }
 
+.modal-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border: 2px solid #ff4656;
+}
+
 @media (max-width : 767px) {
     #one{
         background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
