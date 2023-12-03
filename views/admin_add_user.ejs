@@ -51,13 +51,21 @@
                                     onchange="displayImage()">
                             </div>
                             <div class="input-field d-flex flex-row">
-
                                 <button type="submit" class="btn w-50"
                                     style="background-color: #ff4654; color: aliceblue;">Add User</button>
                                 <div class="hidden" style="color: rgba(240, 248, 255, 0);">_</div>
                                 <a href="/editback" class="btn  w-50"
                                     style="text-decoration: none; background-color: #ff4654; color: white;">Back</a>
-
+                            </div>
+                            <div class="p-2">
+                                <% if(message) { %>
+                                    <div class="alert alert-dismissible fade show alert-<%=(message.type)%>" role="alert">
+                                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                                        <strong>
+                                            <%= message.message %>
+                                        </strong>
+                                    </div>
+                                <%}%>
                             </div>
                         </form>
                     </div>

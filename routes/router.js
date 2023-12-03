@@ -229,6 +229,10 @@ router.post('/add', upload, async (req, res) => {
                 const imagePath = path.join(__dirname, "../uploads", req.file.filename);
                 fs.unlinkSync(imagePath);
             }
+            req.session.message = {
+                type : "danger",
+                message : "Email already exist!"
+            }
             return res.redirect('/add-user');
         }
         //Hashing the password
@@ -289,6 +293,10 @@ router.post('/update/:id', upload, async (req, res) => {
         const existinguser = await User.findOne({ email: req.body.email });
         if (existinguser && existinguser._id.toString() !== id) {
             // If the email exists for another user, redirect back to the edit page
+            req.session.message = {
+                type : "danger",
+                message : "Email already exist!"
+            }
             return res.redirect(`/edit/${id}`);
         }
 
