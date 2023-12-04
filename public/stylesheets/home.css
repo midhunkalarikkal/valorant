@@ -56,7 +56,7 @@ html {
     }
   }
 
-#two {
+#two , #three {
     background-color: #0f1923;
 }
 
@@ -77,3 +77,19 @@ h1 , h2 , h3 , h4 , h5 , h5{
 span , h2{
     color: #ff4656;
 }
+
+.screen-size-indicator {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    z-index: 1000;
+}
+
+@media (min-width: 768px) and (max-width: 997px) {
+    .card{
+        width: 14rem;
+    }
+  }
