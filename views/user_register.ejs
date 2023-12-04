@@ -58,14 +58,16 @@
                                 <button type="submit" name="submit" class="btn" style="background-color: #ff4654; color: aliceblue;">Submit</button>
                             </div>
                         </form>
-                        <div class="signin">
+                        <div class="signin mb-3">
                             <span>Already have an account ? <a href="/" style="color: #0f1923;">Sign In</a></span>
-                            <h6 class="text-center text-success p-2 rounded">
-                                <%= message %>
-                            </h6>
-                            <h6 class="text-center text-danger p-2 rounded">
-                                <%= errmsg %>
-                            </h6>
+                            <% if(message){ %>
+                                <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert">
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                                    <strong>
+                                        <%= message %>
+                                    </strong>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>

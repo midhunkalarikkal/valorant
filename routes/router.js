@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
 
 //route to get the user register page
 router.get('/register', (req, res) => {
-    res.render('user_register', { title: "User Register", message: '', errmsg: "" })
+    res.render('user_register', { title: "User Register"})
 })
 
 //route to get the home page
@@ -73,7 +73,7 @@ router.post("/register", upload, async (req, res) => {
                 const imagePath = path.join(__dirname, "../uploads", req.file.filename);
                 fs.unlinkSync(imagePath);
             }
-            return res.render("user_register", { title: "User Register", message: "", errmsg: "Passsword is not matching." })
+            return res.render("user_register", { title: "User Register", type : "danger", message: "Passsword is not matching!" })
         }
 
         const existinguser = await User.findOne({ email: req.body.email })
@@ -82,7 +82,7 @@ router.post("/register", upload, async (req, res) => {
                 const imagePath = path.join(__dirname, "../uploads", req.file.filename);
                 fs.unlinkSync(imagePath);
             }
-            return res.render("user_register", { title: "User Register", message: "", errmsg: "Email already in use." })
+            return res.render("user_register", { title: "User Register", type : "danger", message: "Email already in use!" })
         }
 
         const hashpassword = await bcrypt.hash(req.body.password, 10)
