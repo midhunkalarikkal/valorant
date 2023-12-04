@@ -48,7 +48,7 @@ var upload = multer({
 
 //route to get the user login page
 router.get('/', (req, res) => {
-    res.render('user_login', { title: "User Login", message: '', errmsg: "" })
+    res.render('user_login', { title: "User Login"})
 })
 
 //route to get the user register page
@@ -59,9 +59,9 @@ router.get('/register', (req, res) => {
 //route to get the home page
 router.get('/home', (req, res) => {
     if (req.session.user) {
-        res.render('home', { title: "Home Page", name: req.session.user.name , image : req.session.user.image , email : req.session.user.email });
+        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email });
     } else {
-        res.render('user_login', { title: "User Login", message: "", errmsg: "Relogin needed" });
+        res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
     }
 });
 
@@ -95,7 +95,7 @@ router.post("/register", upload, async (req, res) => {
             password: hashpassword
         })
         await user.save()
-        res.render("user_login", { title: "User Login", message: "Successfull registration", errmsg: "" });
+        res.render("user_login", { title: "User Login", message: "User registered successfully", type: "success" });
     } catch (err) {
         res.status(500).send("Internal Server Error");
         console.log(err)
@@ -108,12 +108,12 @@ router.post('/', async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         const password = req.body.password
         if (!user) {
-            return res.render('user_login', { title: "User Login", message: "", errmsg: "No user found" });
+            return res.render('user_login', { title: "User Login", type: "danger", message: "No user found" });
         }
 
         const ismatch = await bcrypt.compare(password, user.password)
         if (!ismatch) {
-            return res.render('user_login', { title: "User Login", message: "", errmsg: "Wrong password" });
+            return res.render('user_login', { title: "User Login", type: "danger", message: "Wrong password" });
         }
 
         if (ismatch && req.body.email === user.email) {
@@ -121,7 +121,7 @@ router.post('/', async (req, res) => {
             res.redirect("/home")
         }
     } catch (error) {
-        return res.render('user_login', { title: "User Login", message: "", errmsg: "Internal error" });
+        return res.render('user_login', { title: "User Login", type : "danger", message: "Internal error" });
     }
 
 });
@@ -134,7 +134,7 @@ router.get('/logout', (req, res) => {
             console.log(err);
         } else {
             res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-            res.render('user_login', { title: "User Login", message: "logout successfully", errmsg: "" })
+            res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
         }
     })
 })
@@ -230,8 +230,8 @@ router.post('/add', upload, async (req, res) => {
                 fs.unlinkSync(imagePath);
             }
             req.session.message = {
-                type : "danger",
-                message : "Email already exist!"
+                type: "danger",
+                message: "Email already exist!"
             }
             return res.redirect('/add-user');
         }
@@ -264,7 +264,7 @@ router.get('/edit/:id', (req, res) => {
             if (user == null) {
                 res.redirect('/admin_dashboard')
             } else {
-                res.render("admin_edit_user", { title: "Admin Edit User", user : user})
+                res.render("admin_edit_user", { title: "Admin Edit User", user: user })
             }
         })
         .catch((err) => {
@@ -294,8 +294,8 @@ router.post('/update/:id', upload, async (req, res) => {
         if (existinguser && existinguser._id.toString() !== id) {
             // If the email exists for another user, redirect back to the edit page
             req.session.message = {
-                type : "danger",
-                message : "Email already exist!"
+                type: "danger",
+                message: "Email already exist!"
             }
             return res.redirect(`/edit/${id}`);
         }
@@ -353,20 +353,20 @@ router.get('/delete/:id', (req, res) => {
                 res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
             }
         })
-    })
-    
-    //route to return back from edit page to admin dashboard
-    router.get('/editback',(req,res)=>{
-        try{
-            if(!req.session.admin){
-                res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
-            }else{
-                res.redirect('/admin_dashboard')
-            }
-        }catch(err){
+})
+
+//route to return back from edit page to admin dashboard
+router.get('/editback', (req, res) => {
+    try {
+        if (!req.session.admin) {
             res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
-            console.log(err)
+        } else {
+            res.redirect('/admin_dashboard')
         }
+    } catch (err) {
+        res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+        console.log(err)
+    }
 })
 
 module.exports = router
