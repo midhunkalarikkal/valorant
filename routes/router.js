@@ -141,7 +141,7 @@ router.get('/logout', (req, res) => {
 
 //route to get the admin login
 router.get('/admin', (req, res) => {
-    res.render('admin_login', { title: "Admin Login", message: '', errmsg: "" })
+    res.render('admin_login', { title: "Admin Login"})
 })
 
 
@@ -157,7 +157,7 @@ router.post('/admin-login', async (req, res) => {
             req.session.admin = { email: adminemail };
             res.redirect("/admin_dashboard");
         } else {
-            res.render("admin_login", { title: "Admin Login", message: "", errmsg: "Invalid Credentials" });
+            res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
     } catch (error) {
         console.error("Error in admin-login route:", error);
@@ -178,7 +178,7 @@ router.get('/admin_dashboard', async (req, res) => {
                     res.json({ message: err.message })
                 })
         } else {
-            res.render('admin_login', { title: "Admin Login", message: "", errmsg: "Relogin needed" });
+            res.render('admin_login', { title: "Admin Login", type: "danger", message: "Relogin needed!" });
         }
     } catch (error) {
         console.error("Error in admin_dashboard route:", error);
@@ -196,7 +196,7 @@ router.get('/admin-logout', async (req, res) => {
                 res.status(500).send("Internal Server Error");
             } else {
                 res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-                res.render('admin_login', { title: "Admin Login", message: "Logout successfully", errmsg: "" });
+                res.render('admin_login', { title: "Admin Login", message: "Logout successfully", type: "success" });
             }
         });
     } catch (error) {
@@ -314,7 +314,7 @@ router.post('/update/:id', upload, async (req, res) => {
             };
             res.redirect('/admin_dashboard');
         } else {
-            res.render("admin_login", { title: "Admin Login", message: "", errmsg: "Relogin needed" });
+            res.render("admin_login", { title: "Admin Login", type: "danger", message: "Relogin needed!" });
         }
     } catch (err) {
         console.error(err);
@@ -350,7 +350,7 @@ router.get('/delete/:id', (req, res) => {
                 res.redirect('/admin_dashboard')
                 console.log("Error in user deleting ", err)
             } else {
-                res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+                res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed!" })
             }
         })
 })
@@ -359,12 +359,12 @@ router.get('/delete/:id', (req, res) => {
 router.get('/editback', (req, res) => {
     try {
         if (!req.session.admin) {
-            res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+            res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed!" })
         } else {
             res.redirect('/admin_dashboard')
         }
     } catch (err) {
-        res.render("admin_login", { titlle: "Admin Login", message: "", errmsg: "Rwlogin needed" })
+        res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed" })
         console.log(err)
     }
 })
