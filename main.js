@@ -9,10 +9,15 @@ const app = express()
 const PORT = process.env.PORT || 7000
 
 //databse connection
+// mongoose.connect(process.env.DB_URI)
+// const db = mongoose.connection
+// db.on("error" , (error) => console.log(err , "Db connection error"))
+// db.once("open" , () => console.log("Database connected"))
+
 mongoose.connect(process.env.DB_URI)
-const db = mongoose.connection
-db.on("error" , (error) => console.log(err , "Db connection error"))
-db.once("open" , () => console.log("Database connected"))
+.then((result)=>app.listen(PORT ,()=>{ console.log("Db connected and server listening to port 3000")}))
+.catch((err)=>console.log(err))
+
 
 //view engine
 app.set("view engine","ejs")
@@ -47,6 +52,6 @@ app.use((req,res,next)=>{
 })
 
 
-app.listen(PORT, ()=> { 
-    console.log(`Server is listening to the port ${PORT}`)
-})
+// app.listen(PORT, ()=> { 
+//     console.log(`Server is listening to the port ${PORT}`)
+// })
