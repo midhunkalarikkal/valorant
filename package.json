@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "node": "node main.js",
+    "start": "nodemon main.js"
   },
   "author": "Midhun",
   "license": "ISC",

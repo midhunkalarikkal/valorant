@@ -8,29 +8,6 @@ const fs = require('fs')
 const path = require('path')
 const bcrypt = require('bcrypt')
 
-router.use(session({
-    secret: "my secret key",
-    saveUninitialized: true,
-    resave: false,
-    store: MongoStore.create({ mongoUrl: process.env.DB_URI }),
-    cookie: {
-        name: 'myCookie',
-        maxAge: 1000 * 60 * 60 * 2,
-        sameSite: true,
-    }
-}))
-
-router.use((req, res, next) => {
-    res.locals.message = req.session.message
-    delete req.session.message
-    next()
-})
-
-router.use((req, res, next) => {
-    res.set('Cache-Control', 'no-store');
-    next();
-});
-
 //image upload
 var storage = multer.diskStorage({
     destination: function (req, res, cb) {
@@ -128,15 +105,14 @@ router.post('/', async (req, res) => {
 
 //route to logout from homepage
 router.get('/logout', (req, res) => {
-    res.clearCookie('myCookie');
-    req.session.destroy(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-            res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
-        }
-    })
+        req.session.destroy(function (err) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+                res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
+            }
+        })
 })
 
 //route to get the admin login
@@ -368,5 +344,6 @@ router.get('/editback', (req, res) => {
         console.log(err)
     }
 })
+
 
 module.exports = router

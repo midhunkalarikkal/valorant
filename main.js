@@ -8,50 +8,53 @@ const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 7000
 
-//databse connection
-// mongoose.connect(process.env.DB_URI)
-// const db = mongoose.connection
-// db.on("error" , (error) => console.log(err , "Db connection error"))
-// db.once("open" , () => console.log("Database connected"))
-
 mongoose.connect(process.env.DB_URI)
-.then((result)=>app.listen(PORT ,()=>{ console.log("Db connected and server listening to port 3000")}))
-.catch((err)=>console.log(err))
+    .then((result) => {
+        app.listen(PORT, () => {
+            console.log("Db connected and server listening to port 3000")
+        })
+    })
+    .catch((err) => {
+        console.log("MongoDB connection error!")
+        process.exit(1)
+    })
 
 
-//view engine
-app.set("view engine","ejs")
-
-//middlewares
-app.use(express.urlencoded({extended : true}))
-app.use(express.json())
-
-app.use('/static', express.static(path.join(__dirname, "public")))
-app.use("",require("./routes/router"))
-app.use(express.static("uploads"))
-
-
-//session
+// session
 app.use(session({
-    secret : "my secret key",
-    saveUninitialized : true,
-    resave : false,
-    store: MongoStore.create({ mongoUrl:process.env.DB_URI }),
-    cookie:{
-        name:'myCookie',
-        maxAge:1000*60*60*2,
+    secret: "my secret key",
+    saveUninitialized: true,
+    resave: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URI }),
+    cookie: {
+        name: 'myCookie',
+        maxAge: 1000 * 60 * 60 * 2,
         sameSite: true,
     }
 }))
 
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.locals.message = req.session.message
     delete req.session.message
     next()
 })
 
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+});
 
-// app.listen(PORT, ()=> { 
-//     console.log(`Server is listening to the port ${PORT}`)
-// })
+//middlewares
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+
+//Static file serving
+app.use('/static', express.static(path.join(__dirname, "public")))
+app.use(express.static("uploads"))
+
+//Routes
+app.use("", require("./routes/router"))
+
+//view engine
+app.set("view engine", "ejs")
