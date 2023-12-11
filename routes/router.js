@@ -104,15 +104,20 @@ router.post('/', async (req, res) => {
 });
 
 //route to logout from homepage
-router.get('/logout', (req, res) => {
-        req.session.destroy(function (err) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-                res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
-            }
-        })
+router.get('/logout',(req,res)=>{
+    try{
+        req.session.user = null
+    if(!req.session.user){
+        res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+        res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
+    }else{
+        console.log("Logout error");
+        res.redirect('/home')
+    }
+    }catch{
+        console.error("Error in admin-logout route:", error);
+        res.status(500).send("Internal Server Error");
+    }
 })
 
 //route to get the admin login
@@ -163,23 +168,21 @@ router.get('/admin_dashboard', async (req, res) => {
 });
 
 //route to admin logout
-router.get('/admin-logout', async (req, res) => {
-    try {
-        res.clearCookie('myCookie');
-        req.session.destroy(function (err) {
-            if (err) {
-                console.error("Error during admin logout:", err);
-                res.status(500).send("Internal Server Error");
-            } else {
-                res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-                res.render('admin_login', { title: "Admin Login", message: "Logout successfully", type: "success" });
-            }
-        });
-    } catch (error) {
+router.get('/admin-logout',(req,res)=>{
+    try{
+        req.session.admin = null
+    if(!req.session.admin){
+        res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+        res.render('admin_login', { title: "Admin Login", message: "logout successfully", type : "success" })
+    }else{
+        console.log("Logout error");
+        res.redirect('/admin_dashboard')
+    }
+    }catch{
         console.error("Error in admin-logout route:", error);
         res.status(500).send("Internal Server Error");
     }
-});
+})
 
 //route to get user adding page
 router.get('/add-user', async (req, res) => {
