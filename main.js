@@ -4,6 +4,7 @@ const session = require('express-session')
 const mongoose = require('mongoose')
 const MongoStore = require("connect-mongo")
 const path = require('path')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 const PORT = process.env.PORT || 7000
@@ -21,6 +22,7 @@ mongoose.connect(process.env.DB_URI)
 
 
 // session
+app.use(cookieParser())
 app.use(session({
     secret: "my secret key",
     saveUninitialized: true,

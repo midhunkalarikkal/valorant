@@ -2,7 +2,7 @@ const express = require("express")
 const router = express.Router()
 const session = require('express-session')
 const MongoStore = require("connect-mongo")
-const User = require('../models/users')
+const User = require('../models/user')
 const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
@@ -100,7 +100,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         return res.render('user_login', { title: "User Login", type : "danger", message: "Internal error" });
     }
-
 });
 
 //route to logout from homepage
