@@ -767,10 +767,10 @@
                 <table class="table text-white d-none d-md-block">
                     <thead>
                         <tr class="" style="color: #ff4656;">
-                            <th >Mode</th>
-                            <th >Icon</th>
-                            <th >Description</th>
-                            <th >Duration</th>
+                            <th class="table-text">Mode</th>
+                            <th class="table-text">Icon</th>
+                            <th class="table-text">Description</th>
+                            <th class="table-text">Duration</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -778,30 +778,30 @@
                             <tr>
                                 <td>
                                     <% if(mode.displayName){ %>
-                                        <%= mode.displayName %>
+                                        <p class="mode-text"><%= mode.displayName %></p>
                                     <% }else{ %>
-                                        <p>No displayName</p>
+                                        <p class="mode-text">No displayName</p>
                                     <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.displayIcon){ %>
                                         <img src="<%= mode.displayIcon %>" class="w-50">
                                     <% }else{ %>
-                                        <p>No displayIcon</p>
+                                        <p class="mode-text">No displayIcon</p>
                                     <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.description){ %>
-                                        <%= mode.description %>
+                                        <p class="mode-text"><%= mode.description %></p>
                                     <% }else{ %>
-                                        <p>No description</p>
+                                        <p class="mode-text">No description</p>
                                     <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.duration){ %>
-                                        <%= mode.duration %>
+                                        <p class="mode-text"><%= mode.duration %></p>
                                     <% }else{ %>
-                                        <p>No duration</p>
+                                        <p class="mode-text">No duration</p>
                                     <% } %>
                                 </td>
                             </tr>
@@ -814,9 +814,9 @@
                             <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= mode.displayIcon %>" class="w-25">
                             </div>
-                            <span><h5 class="text-center"><%= mode.displayName %></h5></span>
-                            <p><span>Description : </span><%= mode.description %></p>
-                            <p><span>Duration : </span><%= mode.duration %></p>
+                            <span><h5 class="text-center mode-name"><%= mode.displayName %></h5></span>
+                            <p class="mode-text"><span>Description : </span><%= mode.description %></p>
+                            <p class="mode-text"><span>Duration : </span><%= mode.duration %></p>
                         </div>
                         <% } %>
                 <% }) %>
@@ -835,11 +835,11 @@
             <div class="row p-3">
                 <% tiers.forEach((tier)=>{ %>
                     <div class="col-6 col-md-4 col-lg-2 mt-md-4">
-                        <div class="card p-3" style="background-color: rgba(7, 109, 210, 0); border: 1px solid #<%= tier.bg %>;">
+                        <div class="card p-1 p-lg-3" style="background-color: rgba(7, 109, 210, 0); border: 1px solid #<%= tier.bg %>;">
                             <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= tier.icon %>" class="w-25">
                             </div>
-                            <h5 class="card-title text-center" style="color: #<%= tier.bg %>;"><%= tier.tierName %></h5>
+                            <h5 class="card-title text-center tier-name" style="color: #<%= tier.bg %>;"><%= tier.tierName %></h5>
                         </div>
                     </div>
                 <% }) %>

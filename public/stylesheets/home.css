@@ -82,11 +82,11 @@ span , h2{
         font-size: 1rem;
     }
 
-    .agent-name , .map-name{
+    .agent-name , .map-name , .mode-name{
         font-size: 1rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location{
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: .8rem;
     }
 
@@ -101,11 +101,11 @@ span , h2{
         font-size: 1.3rem;
     }
 
-    .agent-name , .map-name{
+    .agent-name , .map-name , .mode-name{
         font-size: 1.3rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location{
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: .9rem;
     }
 
@@ -128,7 +128,7 @@ span , h2{
         font-size: 1.2rem;
     }
 
-    .agent-desc , .map-desc , .map-location{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: 1rem;
     }
 
@@ -155,7 +155,7 @@ span , h2{
         font-size: 1.3rem;
     }
 
-    .agent-desc , .map-desc , .map-location{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: 1.1rem;
     }
     
@@ -170,15 +170,15 @@ span , h2{
         font-size: 2.5rem;
     }
     
-    .agent-name , .map-name{
+    .agent-name , .map-name {
         font-size: 1.8rem;
     }
     
-    .agent-type , .agent-origin{
+    .agent-type , .agent-origin {
         font-size: 1.5rem;
     }
 
-    .agent-desc , .map-desc , .map-location{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: 1.1rem;
     }
 
