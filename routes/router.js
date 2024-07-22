@@ -3,10 +3,13 @@ const router = express.Router()
 const session = require('express-session')
 const MongoStore = require("connect-mongo")
 const User = require('../models/user')
+const Map = require('../models/map')
+const Agent = require('../models/agent')
 const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 const bcrypt = require('bcrypt')
+const { default: axios } = require("axios")
 
 //image upload
 var storage = multer.diskStorage({
@@ -34,9 +37,17 @@ router.get('/register', (req, res) => {
 })
 
 //route to get the home page
-router.get('/home', (req, res) => {
+router.get('/home', async (req, res) => {
     if (req.session.user) {
-        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email });
+        const response = await axios.get("https://valorant-api.com/v1/gamemodes")
+        const gameModes = response.data.data
+        const filteredGameModes = gameModes.map(mode => ({
+            displayName: mode.displayName,
+            description: mode.description,
+            duration: mode.duration,
+            displayIcon: mode.displayIcon,
+        }))
+        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes });
     } else {
         res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
     }
@@ -153,6 +164,24 @@ router.get('/admin_dashboard', async (req, res) => {
             User.find().exec()
                 .then((users) => {
                     res.render('admin_dashboard', { title: "Admin Dashboard", users: users });
+                })
+                
+        } else {
+            res.render('admin_login', { title: "Admin Login", type: "danger", message: "Relogin needed!" });
+        }
+    } catch (error) {
+        console.error("Error in admin_dashboard route:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+//route to get the admin users list
+router.get('/admin_users', async (req, res) => {
+    try {
+        if (req.session.admin) {
+            User.find().exec()
+                .then((users) => {
+                    res.render('admin_users', { title: "Admin users", users: users });
                 })
                 .catch((err) => {
                     res.json({ message: err.message })

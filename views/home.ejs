@@ -49,11 +49,36 @@
         </div>
     </nav>
 
-
+    <!--modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0f1923;">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: rgb(255, 255, 255);">My Profile
+                    </h1>
+                    <button type="button" class="btn-close" style="background-color: #ffffff;" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="<%= image %>" class="modal-image" alt="">
+                    <h6>Logined as : <%= name %>
+                    </h6>
+                    <h6>Email id : <%= email %>
+                    </h6>
+                </div>
+                <div class="modal-footer" style="background-color:#0f1923;">
+                    <button type="button" class="btn btn-secondary" style="background-color:#ff4656;"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal-->
 
     <section id="one" class="d-flex text-center">
-
     </section>
+
+    <!--  Agents -->
     <section id="two" class="p-3">
         <div class="container p-3">
             <h1 class="fw-bold text-light mx-5" style="font-family: 'ValorantFont', sans-serif;">AGENTS</h1>
@@ -531,10 +556,10 @@
             </div>
         </div>
     </section>
-
+    <!--  Agents -->
 
     <!--Maps-->
-    <section class="three p-3" id="three">
+    <section id="three" class="three p-3">
         <div class="container p-3">
             <h1 class="fw-bold text-light mx-5" style="font-family: 'ValorantFont', sans-serif;">MAPS</h1>
             <div class="row" style="background-color: #ff4656; height: 3px;">
@@ -732,6 +757,64 @@
         </div>
     </section>
     <!--Maps-->
+
+    <!-- Gamemodes -->
+    <section id="four" class="p-3">
+        <div class="container p-3">
+            <h1 class="fw-bold text-light mx-5" style="font-family: 'ValorantFont', sans-serif;">GAMEMODES</h1>
+            <div class="row" style="background-color: #ff4656; height: 3px;">
+                <hr>
+            </div>
+            <div class="row p-3">
+                <table class="table text-white">
+                    <thead>
+                        <tr class="" style="color: #ff4656;">
+                            <th >Mode</th>
+                            <th >Icon</th>
+                            <th >Description</th>
+                            <th >Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% gameModes.forEach((mode)=>{ %>
+                            <tr>
+                                <td>
+                                    <% if(mode.displayName){ %>
+                                        <%= mode.displayName %>
+                                    <% }else{ %>
+                                        <p>No displayName</p>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if(mode.displayIcon){ %>
+                                        <img src="<%= mode.displayIcon %>" class="w-50">
+                                    <% }else{ %>
+                                        <p>No displayIcon</p>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if(mode.description){ %>
+                                        <%= mode.description %>
+                                    <% }else{ %>
+                                        <p>No description</p>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if(mode.duration){ %>
+                                        <%= mode.duration %>
+                                    <% }else{ %>
+                                        <p>No duration</p>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!-- Gamemodes -->
+
     <footer id="footer">
         <div class="container">
             <div class="row" style="background-color: #ff4656; height: 3px;">
@@ -744,31 +827,7 @@
         </div>
     </footer>
 
-    <!--modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:#0f1923;">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: rgb(255, 255, 255);">My Profile
-                    </h1>
-                    <button type="button" class="btn-close" style="background-color: #ffffff;" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img src="<%= image %>" class="modal-image" alt="">
-                    <h6>Logined as : <%= name %>
-                    </h6>
-                    <h6>Email id : <%= email %>
-                    </h6>
-                </div>
-                <div class="modal-footer" style="background-color:#0f1923;">
-                    <button type="button" class="btn btn-secondary" style="background-color:#ff4656;"
-                        data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--modal-->
+
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
