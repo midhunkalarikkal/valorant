@@ -1,7 +1,6 @@
 
   @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
 
-
 body {
     font-family: 'Anton', sans-serif;
 }
@@ -9,6 +8,7 @@ body {
 html {
     overflow: scroll;
     overflow-x: hidden;
+    font-size: 16px;
 }
 
 ::-webkit-scrollbar {
@@ -44,18 +44,6 @@ html {
     border: 2px solid #ff4656;
 }
 
-@media (max-width : 767px) {
-    #one{
-        background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
-    }
-}
-
-@media (min-width: 768px) {
-    #one{
-        background: url('../images/logobg.jpg') center/cover no-repeat;
-    }
-  }
-
 #two , #three , #footer , #four{
     background-color: #0f1923;
 }
@@ -88,8 +76,116 @@ span , h2{
     z-index: 1000;
 }
 
-@media (min-width: 768px) and (max-width: 997px) {
+  /* Extra Small Devices (Phones, 600px and down) */
+@media (max-width: 600px) {
+    .main-heading{
+        font-size: 1rem;
+    }
+
+    /* Agent section */
+    .agent-name{
+        font-size: 1rem;
+    }
+    
+    .agent-type , .agent-origin , .agent-desc{
+        font-size: .8rem;
+    }
+    /* Agent section */
+
+    /* Map section */
+    
+    /* Map section */
+
+    #one{
+        background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
+    }
+}
+
+/* Small Devices (Tablets, 600px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+    .main-heading{
+        font-size: 1rem;
+    }
+
+    /* Agent section */
+    .agent-name{
+        font-size: 1rem;
+    }
+    
+    .agent-type , .agent-origin , .agent-desc{
+        font-size: .8rem;
+    }
+    /* Agent section */
+
+    #one{
+        background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
+    }
+}
+
+/* Medium Devices (Tablets and Small Desktops, 769px to 992px) */
+@media (min-width: 769px) and (max-width: 992px) {
+    .main-heading{
+        font-size: 2rem;
+    }
+
+    /* Agent section */
+    .agent-name{
+        font-size: 1.5rem;
+    }
+    
+    .agent-type , .agent-origin , .agent-desc{
+        font-size: 1.2rem;
+    }
+    /* Agent section */
+
+    #one{
+        background: url('../images/logobg.jpg') center/cover no-repeat;
+    }
+
     .card{
         width: 14rem;
     }
-  }
+}
+
+/* Large Devices (Desktops, 993px to 1200px) */
+@media (min-width: 993px) and (max-width: 1200px) {
+    .main-heading{
+        font-size: 2.5rem;
+    }
+
+    /* Agent section */
+    .agent-name{
+        font-size: 2rem;
+    }
+    
+    .agent-type , .agent-origin , .agent-desc{
+        font-size: 1.3rem;
+    }
+    /* Agent section */
+    
+    #one{
+        background: url('../images/logobg.jpg') center/cover no-repeat;
+    }
+}
+
+/* Extra Large Devices (Large Desktops, 1201px and up) */
+@media (min-width: 1201px) {
+    /* Agent section */
+    .main-heading{
+        font-size: 2.5rem;
+    }
+    
+    .agent-name{
+        font-size: 2rem;
+    }
+    
+    .agent-type , .agent-origin , .agent-desc{
+        font-size: 1.5rem;
+    }
+    /* Agent section */
+    
+
+    #one{
+        background: url('../images/logobg.jpg') center/cover no-repeat;
+    }
+}
