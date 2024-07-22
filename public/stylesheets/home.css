@@ -82,19 +82,13 @@ span , h2{
         font-size: 1rem;
     }
 
-    /* Agent section */
-    .agent-name{
+    .agent-name , .map-name{
         font-size: 1rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc{
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location{
         font-size: .8rem;
     }
-    /* Agent section */
-
-    /* Map section */
-    
-    /* Map section */
 
     #one{
         background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
@@ -104,18 +98,16 @@ span , h2{
 /* Small Devices (Tablets, 600px to 768px) */
 @media (min-width: 601px) and (max-width: 768px) {
     .main-heading{
-        font-size: 1rem;
+        font-size: 1.3rem;
     }
 
-    /* Agent section */
-    .agent-name{
-        font-size: 1rem;
+    .agent-name , .map-name{
+        font-size: 1.3rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc{
-        font-size: .8rem;
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location{
+        font-size: .9rem;
     }
-    /* Agent section */
 
     #one{
         background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
@@ -128,15 +120,17 @@ span , h2{
         font-size: 2rem;
     }
 
-    /* Agent section */
-    .agent-name{
+    .agent-name , .map-name{
         font-size: 1.5rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc{
+    .agent-type , .agent-origin{
         font-size: 1.2rem;
     }
-    /* Agent section */
+
+    .agent-desc , .map-desc , .map-location{
+        font-size: 1rem;
+    }
 
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
@@ -153,15 +147,17 @@ span , h2{
         font-size: 2.5rem;
     }
 
-    /* Agent section */
-    .agent-name{
-        font-size: 2rem;
+    .agent-name , .map-name{
+        font-size: 1.8rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc{
+    .agent-type , .agent-origin{
         font-size: 1.3rem;
     }
-    /* Agent section */
+
+    .agent-desc , .map-desc , .map-location{
+        font-size: 1.1rem;
+    }
     
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
@@ -170,20 +166,21 @@ span , h2{
 
 /* Extra Large Devices (Large Desktops, 1201px and up) */
 @media (min-width: 1201px) {
-    /* Agent section */
     .main-heading{
         font-size: 2.5rem;
     }
     
-    .agent-name{
-        font-size: 2rem;
+    .agent-name , .map-name{
+        font-size: 1.8rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc{
+    .agent-type , .agent-origin{
         font-size: 1.5rem;
     }
-    /* Agent section */
-    
+
+    .agent-desc , .map-desc , .map-location{
+        font-size: 1.1rem;
+    }
 
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
