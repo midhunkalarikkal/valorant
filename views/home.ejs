@@ -837,13 +837,11 @@
             <div class="row p-3">
                 <% tiers.forEach((tier)=>{ %>
                     <div class="col-6 col-md-4 col-lg-2 mt-md-4">
-                        <div class="card" style="background-color: rgba(7, 109, 210, 0);">
-                            <div class="card-img p-2 d-flex align-item-center justify-content-center" style="background-color: #<%= tier.bg %>">
+                        <div class="card p-3" style="background-color: rgba(7, 109, 210, 0); border: 1px solid #<%= tier.bg %>;">
+                            <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= tier.icon %>" class="w-25">
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title" style="color: #ff4656;"><%= tier.tierName %></h5>
-                            </div>
+                            <h5 class="card-title text-center" style="color: #<%= tier.bg %>;"><%= tier.tierName %></h5>
                         </div>
                     </div>
                 <% }) %>
