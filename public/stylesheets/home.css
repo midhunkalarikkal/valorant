@@ -11,6 +11,14 @@ html {
     font-size: 16px;
 }
 
+.atag:hover{
+    color: rgb(242, 248, 254);;
+}
+
+.map-desc{
+    color: rgb(242, 248, 254);;
+}
+
 ::-webkit-scrollbar {
     width: 0;
     background: transparent;
@@ -62,8 +70,17 @@ h1 , h2 , h3 , h4 , h5 , h5{
     visibility: hidden;
 }
 
-span , h2{
+.main-heading , .agent-name , .main-color , .map-name , .map-location , .table-tr , .mode-name{
     color: #ff4656;
+}
+
+.horizontal-line{
+    background-color: #ff4656;
+    height: 3px;
+}
+
+.btn{
+    background-color: #ff4656 !important;
 }
 
 .screen-size-indicator {
@@ -144,7 +161,7 @@ span , h2{
 /* Large Devices (Desktops, 993px to 1200px) */
 @media (min-width: 993px) and (max-width: 1200px) {
     .main-heading{
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .agent-name , .map-name{
@@ -167,7 +184,7 @@ span , h2{
 /* Extra Large Devices (Large Desktops, 1201px and up) */
 @media (min-width: 1201px) {
     .main-heading{
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
     
     .agent-name , .map-name {
