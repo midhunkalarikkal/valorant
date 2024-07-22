@@ -39,15 +39,28 @@ router.get('/register', (req, res) => {
 //route to get the home page
 router.get('/home', async (req, res) => {
     if (req.session.user) {
-        const response = await axios.get("https://valorant-api.com/v1/gamemodes")
-        const gameModes = response.data.data
+        const responseOne = await axios.get("https://valorant-api.com/v1/gamemodes")
+        const gameModes = responseOne.data.data
         const filteredGameModes = gameModes.map(mode => ({
             displayName: mode.displayName,
             description: mode.description,
             duration: mode.duration,
             displayIcon: mode.displayIcon,
         }))
-        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes });
+
+        const responseTwo = await axios.get("https://valorant-api.com/v1/competitivetiers")
+        const competitiveTiers = responseTwo.data.data
+        const latestCompetitiveTier = competitiveTiers[competitiveTiers.length - 1].tiers
+        console.log(latestCompetitiveTier)
+        const tier = latestCompetitiveTier.map((tier)=>({
+            tier: tier.tier,
+            tierName : tier.tierName,
+            bg : tier.backgroundColor,
+            icon : tier.largeIcon
+        }))
+        const newtier = tier.slice(3,tier.length)
+
+        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier });
     } else {
         res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
     }

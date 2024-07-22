@@ -766,7 +766,7 @@
                 <hr>
             </div>
             <div class="row p-3">
-                <table class="table text-white">
+                <table class="table text-white d-none d-md-block">
                     <thead>
                         <tr class="" style="color: #ff4656;">
                             <th >Mode</th>
@@ -810,10 +810,47 @@
                             <% }) %>
                     </tbody>
                 </table>
+                <% gameModes.forEach((mode)=>{ %>
+                    <% if(mode.displayName && mode.description && mode.duration){ %>
+                        <div class="card text-light shadow d-block d-md-none border m-2 p-4" style="background-color: rgba(7, 109, 210, 0);">
+                            <div class="card-img p-2 d-flex align-item-center justify-content-center">
+                                <img src="<%= mode.displayIcon %>" class="w-25">
+                            </div>
+                            <span><h5 class="text-center"><%= mode.displayName %></h5></span>
+                            <p><span>Description : </span><%= mode.description %></p>
+                            <p><span>Duration : </span><%= mode.duration %></p>
+                        </div>
+                        <% } %>
+                <% }) %>
             </div>
         </div>
     </section>
     <!-- Gamemodes -->
+
+    <!-- Tiers -->
+    <section id="four" class="p-3">
+        <div class="container p-3">
+            <h1 class="fw-bold text-light mx-5" style="font-family: 'ValorantFont', sans-serif;">COMPETITIVE TIERS</h1>
+            <div class="row" style="background-color: #ff4656; height: 3px;">
+                <hr>
+            </div>
+            <div class="row p-3">
+                <% tiers.forEach((tier)=>{ %>
+                    <div class="col-6 col-md-4 col-lg-2 mt-md-4">
+                        <div class="card" style="background-color: rgba(7, 109, 210, 0);">
+                            <div class="card-img p-2 d-flex align-item-center justify-content-center" style="background-color: #<%= tier.bg %>">
+                                <img src="<%= tier.icon %>" class="w-25">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title" style="color: #ff4656;"><%= tier.tierName %></h5>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <!-- Tiers -->
 
     <footer id="footer">
         <div class="container">
