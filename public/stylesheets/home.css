@@ -93,6 +93,15 @@ h1 , h2 , h3 , h4 , h5 , h5{
     z-index: 1000;
 }
 
+.tier-card{
+    position: relative;
+    transition: box-sahdow 0.3s ease;
+}
+
+.tier-card:hover{
+    box-shadow: 0 0 20px var(--tier-bg)
+}
+
   /* Extra Small Devices (Phones, 600px and down) */
 @media (max-width: 600px) {
     .main-heading{
@@ -146,7 +155,7 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
 
     .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
-        font-size: 1rem;
+        font-size: .9rem;
     }
 
     #one{

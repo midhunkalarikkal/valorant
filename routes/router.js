@@ -5,6 +5,7 @@ const MongoStore = require("connect-mongo")
 const User = require('../models/user')
 const Map = require('../models/map')
 const Agent = require('../models/agent')
+const Valorant = require('valorant-api-js')
 const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
@@ -51,7 +52,6 @@ router.get('/home', async (req, res) => {
         const responseTwo = await axios.get("https://valorant-api.com/v1/competitivetiers")
         const competitiveTiers = responseTwo.data.data
         const latestCompetitiveTier = competitiveTiers[competitiveTiers.length - 1].tiers
-        console.log(latestCompetitiveTier)
         const tier = latestCompetitiveTier.map((tier)=>({
             tier: tier.tier,
             tierName : tier.tierName,
@@ -59,6 +59,14 @@ router.get('/home', async (req, res) => {
             icon : tier.largeIcon
         }))
         const newtier = tier.slice(3,tier.length)
+
+        const config = {language : "en-US"}
+        const client = new Valorant(config)
+        const agents = await client.getAgents()
+        const arr = agents.data.map((agent)=>({
+            name : agent.displayName
+        }))
+        console.log(arr)
 
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier });
     } else {
