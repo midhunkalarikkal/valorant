@@ -68,7 +68,22 @@ router.get('/home', async (req, res) => {
             image : weapon.displayIcon
         }))
 
-        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons });
+        const agents = await client.getAgents()
+        const filteredAgents = agents.data
+        .filter(agent => agent.isPlayableCharacter)
+        .map((agent)=>({
+            name : agent.displayName,
+            icon : agent.displayIcon
+        }))
+        
+        const maps = await client.getMaps()
+        const filteredMaps = maps.data.map((map)=>({
+            name : map.displayName,
+            image : map.splash
+        }))
+        console.log("maos : ",filteredMaps)
+
+        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
     } else {
         res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
     }

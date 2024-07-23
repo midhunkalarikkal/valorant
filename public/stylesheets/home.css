@@ -5,6 +5,13 @@ body {
     font-family: 'Anton', sans-serif;
 }
 
+:root {
+    --primary-color: #ff4656;
+    --secondary-color: #f9feff;
+    --bg-color: #0f1923;
+    --black-color: #000000;
+}
+
 html {
     overflow: scroll;
     overflow-x: hidden;
@@ -12,7 +19,7 @@ html {
 }
 
 .atag:hover , .map-desc , a{
-    color: rgb(242, 248, 254);;
+    color: var(--secondary-color);
 }
 
 ::-webkit-scrollbar {
@@ -21,19 +28,19 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #FF0000;
+    background: var(--primary-color);
 }
 
 .navbar-nav .nav-link{
-    color: #f8f9fa;
+    color: var(--secondary-color);
 }
 
 .navbar-nav .nav-link:hover{
-    color: #ff4656;
+    color: var(--primary-color);
 }
 
 .navbar-nav .nav-link.unhovered {
-    color: #888; /* Color for unhovered items when one is hovered */
+    color: #888;
 }
 
 #one{
@@ -46,18 +53,18 @@ html {
     border-radius: 50%;
     object-fit: cover;
     margin-right: 10px;
-    border: 2px solid #ff4656;
+    border: 2px solid var(--primary-color);
 }
 
 .modal-image {
     width: 40px;
     height: 40px;
     object-fit: cover;
-    border: 2px solid #ff4656;
+    border: 2px solid var(--primary-color);
 }
 
 #two , #three , #footer , #four , #five , #six{
-    background-color: #0f1923;
+    background-color: var(--bg-color);
 }
 
 h1 , h2 , h3 , h4 , h5 , h5{
@@ -74,32 +81,45 @@ h1 , h2 , h3 , h4 , h5 , h5{
     visibility: hidden;
 }
 
-.main-heading , .agent-name , .main-color , .map-name , .map-location , .table-tr , .mode-name{
-    color: #ff4656;
+.main-heading , .agent-name , .main-color , .map-name , .map-location , .table-tr , .mode-name , .map-cords{
+    color: var(--primary-color);
 }
 
 .horizontal-line{
-    background-color: #ff4656;
+    background-color: var(--primary-color);
     height: 3px;
 }
 
 .btn{
-    background-color: #00000000 !important;
-    color: #f8f9fa !important;
+    background-color: var(--bg-color) !important;
+    color: var(--secondary-color) !important;
 }
 
 .btn::selection{
     border: 0;
 }
 
-.screen-size-indicator {
-    position: fixed;
-    top: 0;
-    right: 0;
-    padding: 5px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    z-index: 1000;
+.agent-card:hover , .map-card:hover{
+    cursor: pointer;
+}
+
+.agent-img{
+    transition: transform 0.3s ease;
+}
+
+.agent-card:hover .agent-img{
+    transform: scale(1.5);
+    filter: drop-shadow(2px 2px 2px var(--black-color));
+}
+
+.map-img{
+    transition: transform 0.3s ease;
+}
+
+.map-card:hover .map-img{
+    transform: scale(1.1);
+    filter: drop-shadow(2px 2px 2px var(--black-color));
+    border: 1px solid var(--primary-color);
 }
 
 .tier-card{
@@ -117,12 +137,12 @@ h1 , h2 , h3 , h4 , h5 , h5{
 
 .weapon-card:hover .weapon-img {
     transform: scale(2);
-    filter: drop-shadow(2px 2px 2px black);
+    filter: drop-shadow(2px 2px 2px var(--black-color));
 }
 
 .sidebar {
     height: 100vh;
-    background-color: #0f192394;
+    background-color: var(--bg-color);
     top: 0;
     position: fixed;
     transition: 0.3s ease-in-out;
@@ -135,7 +155,7 @@ h1 , h2 , h3 , h4 , h5 , h5{
     left: 110%;
     transform: translate(-50%, -50%);
     cursor: pointer;
-    color: #f8f9fa;
+    color: var(--secondary-color);
   }
   
  .sidebar ul {
@@ -157,10 +177,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
 
     .agent-name , .map-name , .mode-name{
-        font-size: 1rem;
+        font-size: .8rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .map-cords{
         font-size: .8rem;
     }
 
@@ -185,10 +205,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
 
     .agent-name , .map-name , .mode-name{
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
     
-    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
+    .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .map-cords{
         font-size: .9rem;
     }
 
@@ -213,14 +233,14 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
 
     .agent-name , .map-name{
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
     
     .agent-type , .agent-origin{
         font-size: 1.2rem;
     }
 
-    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .map-cords{
         font-size: .9rem;
     }
 
@@ -249,14 +269,14 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
 
     .agent-name , .map-name{
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
     
     .agent-type , .agent-origin{
         font-size: 1.3rem;
     }
 
-    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name , .map-cords{
         font-size: 1rem;
     }
     
@@ -282,14 +302,14 @@ h1 , h2 , h3 , h4 , h5 , h5{
     }
     
     .agent-name , .map-name {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
     
     .agent-type , .agent-origin {
         font-size: 1.5rem;
     }
 
-    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name , .map-cords{
         font-size: 1rem;
     }
 
