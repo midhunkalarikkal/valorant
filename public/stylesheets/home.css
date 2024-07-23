@@ -24,12 +24,20 @@ html {
     background: #FF0000;
 }
 
+.navbar-nav .nav-link{
+    color: #f8f9fa;
+}
+
+.navbar-nav .nav-link:hover{
+    color: #ff4656;
+}
+
+.navbar-nav .nav-link.unhovered {
+    color: #888; /* Color for unhovered items when one is hovered */
+}
+
 #one{
     height: 100vh;
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    color: #fff;
 }
 
 .sign-in-image {
@@ -48,7 +56,7 @@ html {
     border: 2px solid #ff4656;
 }
 
-#two , #three , #footer , #four{
+#two , #three , #footer , #four , #five , #six{
     background-color: #0f1923;
 }
 
@@ -80,6 +88,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
     color: #f8f9fa !important;
 }
 
+.btn::selection{
+    border: 0;
+}
+
 .screen-size-indicator {
     position: fixed;
     top: 0;
@@ -108,6 +120,36 @@ h1 , h2 , h3 , h4 , h5 , h5{
     filter: drop-shadow(2px 2px 2px black);
 }
 
+.sidebar {
+    height: 100vh;
+    background-color: #0f192394;
+    top: 0;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+    z-index: 1;
+  }
+  
+ .sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    left: 110%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    color: #f8f9fa;
+  }
+  
+ .sidebar ul {
+    display: none;
+  }
+  
+ .sidebar.active {
+    left: 0;
+  }
+  
+ .sidebar.active ul {
+    display: block;
+  }
+
   /* Extra Small Devices (Phones, 600px and down) */
 @media (max-width: 600px) {
     .main-heading{
@@ -128,6 +170,11 @@ h1 , h2 , h3 , h4 , h5 , h5{
 
     #one{
         background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
+    }
+
+    .sidebar {
+        width: 50%;
+        left: -50%;
     }
 }
 
@@ -151,6 +198,11 @@ h1 , h2 , h3 , h4 , h5 , h5{
 
     #one{
         background: url('../images/PhWallpaper.jpg') center/cover no-repeat;
+    }
+    
+    .sidebar {
+        width: 40%;
+        left: -40%;
     }
 }
 
@@ -183,6 +235,11 @@ h1 , h2 , h3 , h4 , h5 , h5{
     .card{
         width: 14rem;
     }
+
+    .sidebar {
+        width: 30%;
+        left: -30%;
+    }
 }
 
 /* Large Devices (Desktops, 993px to 1200px) */
@@ -206,6 +263,16 @@ h1 , h2 , h3 , h4 , h5 , h5{
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
     }
+
+    .navbar-nav .nav-link{
+        font-size: 1.3rem;
+    }
+
+    .sidebar {
+        width: 25%;
+        left: -25%;
+    }
+
 }
 
 /* Extra Large Devices (Large Desktops, 1201px and up) */
@@ -229,4 +296,14 @@ h1 , h2 , h3 , h4 , h5 , h5{
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
     }
+
+    .navbar-nav .nav-link{
+        font-size: 1.3rem;
+    }
+
+    .sidebar {
+        width: 25%;
+        left: -25%;
+    }
+
 }

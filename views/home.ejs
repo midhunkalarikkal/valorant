@@ -17,74 +17,74 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark p-3" style="background-color: #0f1923;">
+
+    <nav class="navbar navbar-expand-md navbar-dark p-3" style="background-color: #0f1923;">
         <div class="container">
             <a href="/" class="navbar-brand fs-4 fw-bold">VALORANT</a>
-            <button class="navbar-toggler" data-bs-target="#my-nav" data-bs-toggle="collapse" aria-controls="my-nav"
-                aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon" style="color: #076dd2;"></span>
-            </button>
-            <div id="my-nav" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto d-flex align-items-center">
-                    <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <a href="#one" class="nav-link"><img src="<%= image %>" class="sign-in-image">
-                            <%= name %>
-                        </a>
-                    </li>
-                    <div class="dropdown my-0 ms-3">
-                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Options
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#"><i class="fas fa-home me-1"></i>Home</a></li>
-                          <li><a class="dropdown-item" href="#agents"><i class="fas fa-home me-1"></i>Agents</a></li>
-                          <li><a class="dropdown-item" href="#maps"><i class="fas fa-home me-1"></i>Maps</a></li>
-                          <li><a class="dropdown-item" href="#weapons"><i class="fas fa-home me-1"></i>Weapons</a></li>
-                          <li><a class="dropdown-item" href="#modes"><i class="fas fa-home me-1"></i>Game Modes</a></li>
-                          <li><a class="dropdown-item" href="#tiers"><i class="fas fa-home me-1"></i>Competitive Tiers</a></li>
-                        </ul>
-                    </div>
-                </ul>
-            </div>
+            <ul class="navbar-nav ms-auto d-flex align-items-center">
+                <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <a href="#one" class="nav-link">
+                        <p>Hi, <%= name %></p>
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
 
-    <!--modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color:#0f1923;">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: rgb(255, 255, 255);">My Profile
-                    </h1>
-                    <button type="button" class="btn-close" style="background-color: #ffffff;" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img src="<%= image %>" class="modal-image" alt="">
-                    <h6>Logined as : <%= name %>
-                    </h6>
-                    <h6>Email id : <%= email %>
-                    </h6>
-                    <a class="dropdown-item" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                    <a class="dropdown-item" href=""><i class="fa-solid fa-moon fa-sun"></i> Darkmode</a>
-                    <a class="dropdown-item" href=""><i class="fa-solid fa-sun"></i> Darkmode</a>
-                </div>
-                <div class="modal-footer" style="background-color:#0f1923;">
-                    <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
+    <!-- Side sticky bar -->
+    <div class="sidebar d-flex align-items-center justify-content-center">
+        <div class="sidebar-toggle">
+            <i class="fas fa-chevron-right" id="navtoggle"></i>
         </div>
+        <ul class="navbar-nav">
+            <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <a href="#one" class="nav-link">
+                    <img src="<%= image %>" class="sign-in-image">
+                    <%= name %>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-home me-1"></i>Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#two"><i class="fas fa-person me-1"></i>Agents</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#three"><i class="fas fa-map me-1"></i>Maps</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#four"><i class="fas fa-gun  me-1"></i>Weapons</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#five"><i class="fas fa-brands fa-monero me-1"></i>Game Modes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#six"><i class="fas fa-layer-group me-1"></i>Competitive Tiers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-sun me-1"></i>Light mode</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-moon me-1"></i>Dark mode</a>
+            </li>
+        </ul>
     </div>
-    <!--modal-->
+    <!-- Side sticky bar -->
 
-    <section id="one" class="d-flex text-center">
+    <!-- Landing wallpaper -->
+    <section id="one" class="d-flex align-items-cneter justify-content-start">
     </section>
+    <!-- Landing wallpaper -->
 
     <!--  Agents -->
     <section id="two" class="p-3">
         <div class="container p-3">
-            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">AGENTS</h2>
-            <div class="row horizontal-line" >
+            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">AGENTS
+            </h2>
+            <div class="row horizontal-line">
                 <hr>
             </div>
             <div class="row p-5">
@@ -95,11 +95,13 @@
                             <div class="desc">
                                 <div class="row p-2">
                                     <h2 class="text agent-name">ASTRA</h2>
-                                    <h5 class="text text-light agent-type">Type : <span class="main-color">Controller</span></h5>
-                                    <h5 class="text text-light agent-origin">Origin : <span class="main-color">Ghana <img
-                                                src="/static/images/Country/Ghana.png" class="img-fluid country-flag"
+                                    <h5 class="text text-light agent-type">Type : <span
+                                            class="main-color">Controller</span></h5>
+                                    <h5 class="text text-light agent-origin">Origin : <span class="main-color">Ghana
+                                            <img src="/static/images/Country/Ghana.png" class="img-fluid country-flag"
                                                 alt=""></span></h5>
-                                    <p class="text text-light agent-desc"><i>Ghanaian Agent <span class="text fw-bold main-color">Astra</span>
+                                    <p class="text text-light agent-desc"><i>Ghanaian Agent <span
+                                                class="text fw-bold main-color">Astra</span>
                                             harnesses the energies of the cosmos to reshape battlefields to her whim.
                                             With full command of her astral form and a talent for deep strategic
                                             foresight, she’s always eons ahead of her enemy’s next move.</i></p>
@@ -563,7 +565,7 @@
     <section id="three" class="three p-3">
         <div class="container p-3">
             <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">MAPS</h2>
-            <div class="row horizontal-line" >
+            <div class="row horizontal-line">
                 <hr>
             </div>
             <div class="row p-3">
@@ -579,8 +581,9 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item fw-bolder map-location" style="background-color: #ffffff00;">
-                                <span class="main-color">Location : </span><span class="fw-bold text-light">Rabat, Morocco, Alpha Earth <img
-                                        src="/static/images/Country/Morocco.png" class="img-fluid country-flag"></span>
+                                <span class="main-color">Location : </span><span class="fw-bold text-light">Rabat,
+                                    Morocco, Alpha Earth <img src="/static/images/Country/Morocco.png"
+                                        class="img-fluid country-flag"></span>
                             </li>
                         </ul>
                     </div>
@@ -759,34 +762,39 @@
     </section>
     <!--Maps-->
 
-     <!-- Weapons -->
-     <section id="four" class="p-3">
+    <!-- Weapons -->
+    <section id="four" class="p-3">
         <div class="container p-3">
-            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">WEAPONS</h2>
+            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">WEAPONS
+            </h2>
             <div class="row horizontal-line">
                 <hr>
             </div>
             <div class="row p-3">
                 <% weapons.forEach((weapon)=>{ %>
                     <div class="col-6 col-lg-4 mt-md-4">
-                        <div class="card p-2 p-lg-3 weapon-card m-3" style="background-color: rgba(7, 109, 210, 0); border: 2px solid #ff4656;">
-                            <h5 class="card-title text-center main-color weapon-name"><%= weapon.name %></h5>
+                        <div class="card p-2 p-lg-3 weapon-card m-3"
+                            style="background-color: rgba(7, 109, 210, 0); border: 2px solid #ff4656;">
+                            <h5 class="card-title text-center main-color weapon-name">
+                                <%= weapon.name %>
+                            </h5>
                             <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= weapon.image %>" class="w-75 weapon-img">
                             </div>
                         </div>
                     </div>
-                <% }) %>
+                    <% }) %>
             </div>
         </div>
     </section>
     <!-- Weapons -->
 
     <!-- Gamemodes -->
-    <section id="four" class="p-3">
+    <section id="five" class="p-3">
         <div class="container p-3">
-            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">GAMEMODES</h2>
-            <div class="row horizontal-line" >
+            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">GAMEMODES
+            </h2>
+            <div class="row horizontal-line">
                 <hr>
             </div>
             <div class="row p-3">
@@ -804,31 +812,37 @@
                             <tr>
                                 <td>
                                     <% if(mode.displayName){ %>
-                                        <p class="mode-text"><%= mode.displayName %></p>
-                                    <% }else{ %>
-                                        <p class="mode-text">No displayName</p>
-                                    <% } %>
+                                        <p class="mode-text">
+                                            <%= mode.displayName %>
+                                        </p>
+                                        <% }else{ %>
+                                            <p class="mode-text">No displayName</p>
+                                            <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.displayIcon){ %>
                                         <img src="<%= mode.displayIcon %>" class="w-50">
-                                    <% }else{ %>
-                                        <p class="mode-text">No displayIcon</p>
-                                    <% } %>
+                                        <% }else{ %>
+                                            <p class="mode-text">No displayIcon</p>
+                                            <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.description){ %>
-                                        <p class="mode-text"><%= mode.description %></p>
-                                    <% }else{ %>
-                                        <p class="mode-text">No description</p>
-                                    <% } %>
+                                        <p class="mode-text">
+                                            <%= mode.description %>
+                                        </p>
+                                        <% }else{ %>
+                                            <p class="mode-text">No description</p>
+                                            <% } %>
                                 </td>
                                 <td>
                                     <% if(mode.duration){ %>
-                                        <p class="mode-text"><%= mode.duration %></p>
-                                    <% }else{ %>
-                                        <p class="mode-text">No duration</p>
-                                    <% } %>
+                                        <p class="mode-text">
+                                            <%= mode.duration %>
+                                        </p>
+                                        <% }else{ %>
+                                            <p class="mode-text">No duration</p>
+                                            <% } %>
                                 </td>
                             </tr>
                             <% }) %>
@@ -836,39 +850,52 @@
                 </table>
                 <% gameModes.forEach((mode)=>{ %>
                     <% if(mode.displayName && mode.description && mode.duration){ %>
-                        <div class="card text-light shadow d-block d-md-none border m-2 p-4" style="background-color: rgba(7, 109, 210, 0);">
+                        <div class="card text-light shadow d-block d-md-none border m-2 p-4"
+                            style="background-color: rgba(7, 109, 210, 0);">
                             <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= mode.displayIcon %>" class="w-25">
                             </div>
-                            <span><h5 class="text-center mode-name"><%= mode.displayName %></h5></span>
-                            <p class="mode-text"><span class="main-color">Description : </span><%= mode.description %></p>
-                            <p class="mode-text"><span class="main-color">Duration : </span><%= mode.duration %></p>
+                            <span>
+                                <h5 class="text-center mode-name">
+                                    <%= mode.displayName %>
+                                </h5>
+                            </span>
+                            <p class="mode-text"><span class="main-color">Description : </span>
+                                <%= mode.description %>
+                            </p>
+                            <p class="mode-text"><span class="main-color">Duration : </span>
+                                <%= mode.duration %>
+                            </p>
                         </div>
                         <% } %>
-                <% }) %>
+                            <% }) %>
             </div>
         </div>
     </section>
     <!-- Gamemodes -->
 
     <!-- Tiers -->
-    <section id="four" class="p-3">
+    <section id="six" class="p-3">
         <div class="container p-3">
-            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">COMPETITIVE TIERS</h2>
+            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">
+                COMPETITIVE TIERS</h2>
             <div class="row horizontal-line">
                 <hr>
             </div>
             <div class="row p-3">
                 <% tiers.forEach((tier)=>{ %>
                     <div class="col-6 col-md-4 col-lg-2 mt-md-4">
-                        <div class="card p-1 p-lg-3 tier-card" style="--tier-bg: #<%= tier.bg %>; background-color: rgba(7, 109, 210, 0); border: 1px solid #<%= tier.bg %>; ">
+                        <div class="card p-1 p-lg-3 tier-card"
+                            style="--tier-bg: #<%= tier.bg %>; background-color: rgba(7, 109, 210, 0); border: 1px solid #<%= tier.bg %>; ">
                             <div class="card-img p-2 d-flex align-item-center justify-content-center">
                                 <img src="<%= tier.icon %>" class="w-25">
                             </div>
-                            <h5 class="card-title text-center tier-name" style="color: #<%= tier.bg %>;"><%= tier.tierName %></h5>
+                            <h5 class="card-title text-center tier-name" style="color: #<%= tier.bg %>;">
+                                <%= tier.tierName %>
+                            </h5>
                         </div>
                     </div>
-                <% }) %>
+                    <% }) %>
             </div>
         </div>
     </section>
@@ -880,7 +907,9 @@
                 <hr>
             </div>
             <div class="row p-4 text-center">
-                <p class="text text-light">Designed by <span class="main-color"><a class="main-color atag" style="text-decoration: none;" href="https://github.com/midhunkalarikkal">midhun k paniker</a></span></p>
+                <p class="text text-light">Designed by <span class="main-color"><a class="main-color atag"
+                            style="text-decoration: none;" href="https://github.com/midhunkalarikkal">midhun k
+                            paniker</a></span></p>
             </div>
         </div>
     </footer>
@@ -902,6 +931,44 @@
             document.querySelector('.carousel-control-prev').style.visibility = 'hidden';
             document.querySelector('.carousel-control-next').style.visibility = 'hidden';
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    navLinks.forEach(otherLink => {
+                        if (otherLink !== link) {
+                            otherLink.classList.add('unhovered');
+                        }
+                    });
+                });
+
+                link.addEventListener('mouseleave', () => {
+                    navLinks.forEach(otherLink => {
+                        otherLink.classList.remove('unhovered');
+                    });
+                });
+            });
+        });
+
+        const sidebar = document.querySelector('.sidebar');
+        const toggle = document.querySelector('.sidebar-toggle');
+        const navtoggle = document.getElementById('navtoggle')
+
+        navtoggle.classList.add("fa-chevron-right");
+
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                navtoggle.classList.remove("fa-chevron-right");
+                navtoggle.classList.add("fa-chevron-left");
+            } else {
+                navtoggle.classList.remove("fa-chevron-left");
+                navtoggle.classList.add("fa-chevron-right");
+            }
+        });
+
     </script>
 
 </body>
