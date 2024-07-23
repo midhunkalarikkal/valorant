@@ -12,6 +12,13 @@ body {
     --black-color: #000000;
 }
 
+body.light-mode{
+    --primary-color: #0f1923;
+    --secondary-color: #f9feff;
+    --bg-color: #ece8e1;
+    --black-color: #000000;
+}
+
 html {
     overflow: scroll;
     overflow-x: hidden;
@@ -142,7 +149,7 @@ h1 , h2 , h3 , h4 , h5 , h5{
 
 .sidebar {
     height: 100vh;
-    background-color: var(--bg-color);
+    background-color: #0f192393;
     top: 0;
     position: fixed;
     transition: 0.3s ease-in-out;
