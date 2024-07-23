@@ -11,11 +11,7 @@ html {
     font-size: 16px;
 }
 
-.atag:hover{
-    color: rgb(242, 248, 254);;
-}
-
-.map-desc{
+.atag:hover , .map-desc , a{
     color: rgb(242, 248, 254);;
 }
 
@@ -80,7 +76,8 @@ h1 , h2 , h3 , h4 , h5 , h5{
 }
 
 .btn{
-    background-color: #ff4656 !important;
+    background-color: #00000000 !important;
+    color: #f8f9fa !important;
 }
 
 .screen-size-indicator {

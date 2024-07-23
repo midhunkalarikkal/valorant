@@ -25,24 +25,25 @@
                 <span class="navbar-toggler-icon" style="color: #076dd2;"></span>
             </button>
             <div id="my-nav" class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
                     <li class="nav-item active" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <a href="#one" class="nav-link"><img src="<%= image%>" class="sign-in-image">
+                        <a href="#one" class="nav-link"><img src="<%= image %>" class="sign-in-image">
                             <%= name %>
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a href="#" class="nav-link"><i class="fas fa-home me-1"></i>Home</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="#two" class="nav-link"><i class="fas fa-person me-1"></i>Agents</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="#three" class="nav-link"><i class="fa-solid fa-map-location-dot"></i> Maps</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                    </li>
+                    <div class="dropdown my-0 ms-3">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Options
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="#"><i class="fas fa-home me-1"></i>Home</a></li>
+                          <li><a class="dropdown-item" href="#agents"><i class="fas fa-home me-1"></i>Agents</a></li>
+                          <li><a class="dropdown-item" href="#maps"><i class="fas fa-home me-1"></i>Maps</a></li>
+                          <li><a class="dropdown-item" href="#weapons"><i class="fas fa-home me-1"></i>Weapons</a></li>
+                          <li><a class="dropdown-item" href="#modes"><i class="fas fa-home me-1"></i>Game Modes</a></li>
+                          <li><a class="dropdown-item" href="#tiers"><i class="fas fa-home me-1"></i>Competitive Tiers</a></li>
+                        </ul>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -64,6 +65,9 @@
                     </h6>
                     <h6>Email id : <%= email %>
                     </h6>
+                    <a class="dropdown-item" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                    <a class="dropdown-item" href=""><i class="fa-solid fa-moon fa-sun"></i> Darkmode</a>
+                    <a class="dropdown-item" href=""><i class="fa-solid fa-sun"></i> Darkmode</a>
                 </div>
                 <div class="modal-footer" style="background-color:#0f1923;">
                     <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
