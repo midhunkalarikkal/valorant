@@ -40,18 +40,19 @@ router.get('/register', (req, res) => {
 //route to get the home page
 router.get('/home', async (req, res) => {
     if (req.session.user) {
-        const responseOne = await axios.get("https://valorant-api.com/v1/gamemodes")
-        const gameModes = responseOne.data.data
-        const filteredGameModes = gameModes.map(mode => ({
+        const config = {language : "en-US"}
+        const client = new Valorant(config)
+
+        const gameModes = await client.getGamemodes()
+        const filteredGameModes = gameModes.data.map(mode => ({
             displayName: mode.displayName,
             description: mode.description,
             duration: mode.duration,
             displayIcon: mode.displayIcon,
         }))
 
-        const responseTwo = await axios.get("https://valorant-api.com/v1/competitivetiers")
-        const competitiveTiers = responseTwo.data.data
-        const latestCompetitiveTier = competitiveTiers[competitiveTiers.length - 1].tiers
+        const competitiveTiers = await client.getCompetitiveTiers()
+        const latestCompetitiveTier = competitiveTiers.data[competitiveTiers.data.length - 1].tiers
         const tier = latestCompetitiveTier.map((tier)=>({
             tier: tier.tier,
             tierName : tier.tierName,
@@ -60,15 +61,14 @@ router.get('/home', async (req, res) => {
         }))
         const newtier = tier.slice(3,tier.length)
 
-        const config = {language : "en-US"}
-        const client = new Valorant(config)
-        const agents = await client.getAgents()
-        const arr = agents.data.map((agent)=>({
-            name : agent.displayName
+        
+        const weapons = await client.getWeapons()
+        const filteredWeapons = weapons.data.map((weapon)=>({
+            name : weapon.displayName,
+            image : weapon.displayIcon
         }))
-        console.log(arr)
 
-        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier });
+        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons });
     } else {
         res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
     }

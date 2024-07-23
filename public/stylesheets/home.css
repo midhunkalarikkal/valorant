@@ -102,6 +102,15 @@ h1 , h2 , h3 , h4 , h5 , h5{
     box-shadow: 0 0 20px var(--tier-bg)
 }
 
+.weapon-img {
+    transition: transform 0.3s ease;
+}
+
+.weapon-card:hover .weapon-img {
+    transform: scale(2);
+    filter: drop-shadow(2px 2px 2px black);
+}
+
   /* Extra Small Devices (Phones, 600px and down) */
 @media (max-width: 600px) {
     .main-heading{
@@ -114,6 +123,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
     
     .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: .8rem;
+    }
+
+    .weapon-name{
+        font-size: .6rem;
     }
 
     #one{
@@ -133,6 +146,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
     
     .agent-type , .agent-origin , .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
         font-size: .9rem;
+    }
+
+    .weapon-name{
+        font-size: .7rem;
     }
 
     #one{
@@ -158,6 +175,10 @@ h1 , h2 , h3 , h4 , h5 , h5{
         font-size: .9rem;
     }
 
+    .weapon-name{
+        font-size: .7rem;
+    }
+
     #one{
         background: url('../images/logobg.jpg') center/cover no-repeat;
     }
@@ -181,7 +202,7 @@ h1 , h2 , h3 , h4 , h5 , h5{
         font-size: 1.3rem;
     }
 
-    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name{
         font-size: 1rem;
     }
     
@@ -204,7 +225,7 @@ h1 , h2 , h3 , h4 , h5 , h5{
         font-size: 1.5rem;
     }
 
-    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name{
+    .agent-desc , .map-desc , .map-location , .mode-text , .tier-name , .weapon-name{
         font-size: 1rem;
     }
 

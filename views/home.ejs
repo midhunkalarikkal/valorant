@@ -755,6 +755,29 @@
     </section>
     <!--Maps-->
 
+     <!-- Weapons -->
+     <section id="four" class="p-3">
+        <div class="container p-3">
+            <h2 class="fw-bold text-light mx-5 main-heading" style="font-family: 'ValorantFont', sans-serif;">WEAPONS</h2>
+            <div class="row horizontal-line">
+                <hr>
+            </div>
+            <div class="row p-3">
+                <% weapons.forEach((weapon)=>{ %>
+                    <div class="col-6 col-lg-4 mt-md-4">
+                        <div class="card p-2 p-lg-3 weapon-card m-3" style="background-color: rgba(7, 109, 210, 0); border: 2px solid #ff4656;">
+                            <h5 class="card-title text-center main-color weapon-name"><%= weapon.name %></h5>
+                            <div class="card-img p-2 d-flex align-item-center justify-content-center">
+                                <img src="<%= weapon.image %>" class="w-75 weapon-img">
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <!-- Weapons -->
+
     <!-- Gamemodes -->
     <section id="four" class="p-3">
         <div class="container p-3">
@@ -857,9 +880,6 @@
             </div>
         </div>
     </footer>
-
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
