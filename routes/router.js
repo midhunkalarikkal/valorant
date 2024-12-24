@@ -15,21 +15,14 @@ const upload = multer({ storage });
 
 
 
-//image upload
-// var storage = multer.diskStorage({
-//     destination: function (req, res, cb) {
-//         cb(null, "./uploads")
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname)
-//     }
-// })
-
-// var upload = multer({
-//     storage: storage
-// }).single("image")
-
-
+function isAuthenticated(req, res, next) {
+    if (req.session.user) {
+        // If user is logged in, proceed to the next middleware/route
+        return next();
+    }
+    // If not logged in, redirect to login page
+    res.redirect('/');
+}
 
 
 //route to get the user register page
@@ -81,35 +74,65 @@ router.post("/register", upload.single("image"),async (req, res) => {
 
 //route to get the user login page
 router.get('/', (req, res) => {
-    res.render('user_login', { title: "User Login"})
-})
+    if (req.session.user) {
+        return res.redirect('/home');
+    }
+    res.render('user_login', { title: "User Login" });
+});
 
 //route to check login data in database and redirecting to home page
 router.post('/', async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.body.email });
-        const password = req.body.password
+        const { email, password } = req.body;
+
+        // Input validation
+        if (!email || !password) {
+            return res.render('user_login', { 
+                title: "User Login", 
+                type: "danger", 
+                message: "Please provide both email and password" 
+            });
+        }
+
+        // Find user by email
+        const user = await User.findOne({ email });
         if (!user) {
-            return res.render('user_login', { title: "User Login", type: "danger", message: "No user found" });
+            return res.render('user_login', { 
+                title: "User Login", 
+                type: "danger", 
+                message: "No user found with the provided email" 
+            });
         }
 
-        const ismatch = await bcrypt.compare(password, user.password)
-        if (!ismatch) {
-            return res.render('user_login', { title: "User Login", type: "danger", message: "Wrong password" });
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.render('user_login', { 
+                title: "User Login", 
+                type: "danger", 
+                message: "Incorrect password" 
+            });
         }
 
-        if (ismatch && req.body.email === user.email) {
-            req.session.user = user;
-            res.redirect("/home")
-        }
+        // Successful login
+        req.session.user = user;
+        res.redirect("/home");
     } catch (error) {
-        return res.render('user_login', { title: "User Login", type : "danger", message: "Internal error" });
+        console.error("Login Error:", error);
+        res.status(500).render('user_login', { 
+            title: "User Login", 
+            type: "danger", 
+            message: "Internal server error. Please try again later." 
+        });
     }
 });
 
 //route to get the home page
-router.get('/home', async (req, res) => {
-    if (req.session.user) {
+router.get('/home',isAuthenticated, async (req, res) => {
+    try{
+    res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.header('Pragma', 'no-cache');
+    res.header('Expires', '0');
         const config = {language : "en-US"}
         const client = new Valorant(config)
 
@@ -153,24 +176,30 @@ router.get('/home', async (req, res) => {
         }))
 
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
-    } else {
-        res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
+    }catch(err){
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
     }
 });
 
 //route to logout from homepage
 router.get('/logout',(req,res)=>{
-    try{
-        req.session.user = null
-    if(!req.session.user){
-        res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-        res.render('user_login', { title: "User Login", message: "logout successfully", type : "success" })
-    }else{
-        console.log("Logout error");
-        res.redirect('/home')
-    }
-    }catch{
-        console.error("Error in admin-logout route:", error);
+    try {
+        req.session.destroy(() => {
+            // Disable caching
+            res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.header('Pragma', 'no-cache');
+            res.header('Expires', '0');
+
+            // Redirect to login page after session destruction
+            res.render('user_login', { 
+                title: "User Login", 
+                message: "Logged out successfully", 
+                type: "success" 
+            });
+        });
+    } catch (error) {
+        console.error("Error in logout route:", error);
         res.status(500).send("Internal Server Error");
     }
 })
