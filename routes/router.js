@@ -3,39 +3,109 @@ const router = express.Router()
 const session = require('express-session')
 const MongoStore = require("connect-mongo")
 const User = require('../models/user')
-const Map = require('../models/map')
-const Agent = require('../models/agent')
 const Valorant = require('valorant-api-js')
-const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 const bcrypt = require('bcrypt')
 const { default: axios } = require("axios")
 
+const multer = require('multer')
+const { storage } = require("../utils/cloudinary.config");
+const upload = multer({ storage });
+
+
+
 //image upload
-var storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, "./uploads")
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname)
-    }
+// var storage = multer.diskStorage({
+//     destination: function (req, res, cb) {
+//         cb(null, "./uploads")
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname)
+//     }
+// })
+
+// var upload = multer({
+//     storage: storage
+// }).single("image")
+
+
+
+
+//route to get the user register page
+router.get('/register', (req, res) => {
+    res.render('user_register', { title: "User Register"})
 })
 
-var upload = multer({
-    storage: storage
-}).single("image")
+//route to post user register data to database
+router.post("/register", upload.single("image"),async (req, res) => {
+    try {
+        if (req.body.password !== req.body.cpass) {
+            return res.render("user_register", { 
+                title: "User Register", 
+                type: "danger", 
+                message: "Password is not matching!" 
+            });
+        }
 
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.render("user_register", { 
+                title: "User Register", 
+                type: "danger", 
+                message: "Email already in use!" 
+            });
+        }
+
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+
+        const user = new User({
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            image: req.file.path,
+            password: hashPassword
+        });
+
+        await user.save();
+        res.render("user_login", { 
+            title: "User Login", 
+            message: "User registered successfully", 
+            type: "success" 
+        });
+    } catch (err) {
+        res.status(500).send("Internal Server Error");
+        console.error(err);
+    }
+})
 
 //route to get the user login page
 router.get('/', (req, res) => {
     res.render('user_login', { title: "User Login"})
 })
 
-//route to get the user register page
-router.get('/register', (req, res) => {
-    res.render('user_register', { title: "User Register"})
-})
+//route to check login data in database and redirecting to home page
+router.post('/', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+        const password = req.body.password
+        if (!user) {
+            return res.render('user_login', { title: "User Login", type: "danger", message: "No user found" });
+        }
+
+        const ismatch = await bcrypt.compare(password, user.password)
+        if (!ismatch) {
+            return res.render('user_login', { title: "User Login", type: "danger", message: "Wrong password" });
+        }
+
+        if (ismatch && req.body.email === user.email) {
+            req.session.user = user;
+            res.redirect("/home")
+        }
+    } catch (error) {
+        return res.render('user_login', { title: "User Login", type : "danger", message: "Internal error" });
+    }
+});
 
 //route to get the home page
 router.get('/home', async (req, res) => {
@@ -81,71 +151,10 @@ router.get('/home', async (req, res) => {
             name : map.displayName,
             image : map.splash
         }))
-        console.log("maos : ",filteredMaps)
 
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
     } else {
         res.render('user_login', { title: "User Login", type: "danger", message: "Relogin needed" });
-    }
-});
-
-//route to post user register data to database
-router.post("/register", upload, async (req, res) => {
-    try {
-        if (req.body.password !== req.body.cpass) {
-            if (req.file) {
-                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
-                fs.unlinkSync(imagePath);
-            }
-            return res.render("user_register", { title: "User Register", type : "danger", message: "Passsword is not matching!" })
-        }
-
-        const existinguser = await User.findOne({ email: req.body.email })
-        if (existinguser) {
-            if (req.file) {
-                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
-                fs.unlinkSync(imagePath);
-            }
-            return res.render("user_register", { title: "User Register", type : "danger", message: "Email already in use!" })
-        }
-
-        const hashpassword = await bcrypt.hash(req.body.password, 10)
-
-        const user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            image: req.file.filename,
-            password: hashpassword
-        })
-        await user.save()
-        res.render("user_login", { title: "User Login", message: "User registered successfully", type: "success" });
-    } catch (err) {
-        res.status(500).send("Internal Server Error");
-        console.log(err)
-    }
-})
-
-//route to check login data in database and redirecting to home page
-router.post('/', async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.body.email });
-        const password = req.body.password
-        if (!user) {
-            return res.render('user_login', { title: "User Login", type: "danger", message: "No user found" });
-        }
-
-        const ismatch = await bcrypt.compare(password, user.password)
-        if (!ismatch) {
-            return res.render('user_login', { title: "User Login", type: "danger", message: "Wrong password" });
-        }
-
-        if (ismatch && req.body.email === user.email) {
-            req.session.user = user;
-            res.redirect("/home")
-        }
-    } catch (error) {
-        return res.render('user_login', { title: "User Login", type : "danger", message: "Internal error" });
     }
 });
 
@@ -166,6 +175,8 @@ router.get('/logout',(req,res)=>{
     }
 })
 
+
+
 //route to get the admin login
 router.get('/admin', (req, res) => {
     res.render('admin_login', { title: "Admin Login"})
@@ -182,31 +193,12 @@ router.post('/admin-login', async (req, res) => {
 
         if (email === adminemail && password === adminpassword) {
             req.session.admin = { email: adminemail };
-            res.redirect("/admin_dashboard");
+            res.redirect("/admin_users");
         } else {
             res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
     } catch (error) {
         console.error("Error in admin-login route:", error);
-        res.status(500).send("Internal Server Error");
-    }
-});
-
-
-//route to get the admin dashboard
-router.get('/admin_dashboard', async (req, res) => {
-    try {
-        if (req.session.admin) {
-            User.find().exec()
-                .then((users) => {
-                    res.render('admin_dashboard', { title: "Admin Dashboard", users: users });
-                })
-                
-        } else {
-            res.render('admin_login', { title: "Admin Login", type: "danger", message: "Relogin needed!" });
-        }
-    } catch (error) {
-        console.error("Error in admin_dashboard route:", error);
         res.status(500).send("Internal Server Error");
     }
 });
@@ -263,7 +255,7 @@ router.get('/add-user', async (req, res) => {
 })
 
 //route to post new user data to databse
-router.post('/add', upload, async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
         const existinguser = await User.findOne({ email: req.body.email });
         if (existinguser) {
@@ -316,7 +308,7 @@ router.get('/edit/:id', (req, res) => {
 })
 
 //route to post the admin user edit / update data in to database
-router.post('/update/:id', upload, async (req, res) => {
+router.post('/update/:id', async (req, res) => {
     const id = req.params.id;
     let new_img = "";
 
@@ -368,6 +360,7 @@ router.post('/update/:id', upload, async (req, res) => {
 
 //route to get the admin user delete
 router.get('/delete/:id', (req, res) => {
+    try{
     let id = req.params.id
     User.findByIdAndDelete(id)
         .then((result) => {
@@ -396,6 +389,10 @@ router.get('/delete/:id', (req, res) => {
                 res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed!" })
             }
         })
+    }catch(err){
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    }
 })
 
 //route to return back from edit page to admin dashboard
