@@ -29,7 +29,7 @@
                 <div class="col-md-6 right">
                     <div class="input-box">
                         <header class="my-4 fs-4" style="color: #0f1923;">Edit User [<%= user.name%>]</header>
-                        <form action="/update/<%= user._id %>" method="POST" id="add-form"
+                        <form action="/update/<%= user._id %>" method="POST" id="edit-form"
                             enctype="multipart/form-data">
                             <div class="input-field">
                                 <input type="text" class="input" id="name" name="name" value="<%= user.name %>"
@@ -75,6 +75,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -89,6 +90,38 @@
                     alert.style.display = 'none';
                 }
             }, 3000);
+
+            ////// form validation \\\\\\
+            document.getElementById("edit-form").addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById("name").value.trim();
+                const email = document.getElementById("email").value.trim();
+                const phone = document.getElementById("phone").value.trim();
+
+                const nameRegex = /^[A-Za-z\s]{4,20}$/;
+                if (!nameRegex.test(name)) {
+                    return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
+                }
+
+                if (!email.endsWith("@gmail.com")) {
+                    return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
+                }
+
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(phone)) {
+                    return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
+                }
+
+                Swal.fire({
+                    title: "Success!",
+                    text: "Form submitted successfully.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                }).then(() => {
+                    e.target.submit();
+                });
+            });
         </script>
 </body>
 

@@ -90,7 +90,6 @@ router.post('/', async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Input validation
         if (!email || !password) {
             return res.render('user_login', { 
                 title: "User Login", 
@@ -99,7 +98,6 @@ router.post('/', async (req, res) => {
             });
         }
 
-        // Find user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.render('user_login', { 
@@ -109,7 +107,6 @@ router.post('/', async (req, res) => {
             });
         }
 
-        // Compare password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.render('user_login', { 
@@ -119,7 +116,6 @@ router.post('/', async (req, res) => {
             });
         }
 
-        // Successful login
         req.session.user = user;
         res.redirect("/home");
     } catch (error) {
@@ -221,15 +217,14 @@ router.get('/admin', (req, res) => {
 //route to post the data from admin login to databse for checking credentials
 router.post('/admin-login', async (req, res) => {
     try {
-        const adminemail = process.env.ADMIN_EMAIL || "admin@gmail.com"; // Use environment variables for security
-        const adminpassword = process.env.ADMIN_PASSWORD || "admin123"; // Use environment variables for security
+        const adminemail = process.env.ADMIN_EMAIL || "admin@gmail.com";
+        const adminpassword = process.env.ADMIN_PASSWORD || "admin123"; 
 
         const { email, password } = req.body;
 
-        // Simple email and password check (You can replace this with a DB query and bcrypt for password hashing)
         if (email === adminemail && password === adminpassword) {
             req.session.admin = { email: adminemail };
-            res.redirect("/admin_users"); // Redirect to the admin users page
+            res.redirect("/admin_users"); 
         } else {
             res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
