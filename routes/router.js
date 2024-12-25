@@ -10,24 +10,24 @@ const bcrypt = require('bcrypt')
 const { default: axios } = require("axios")
 
 const multer = require('multer')
-const { storage } = require("../utils/cloudinary.config");
+const { cloudinary, storage } = require("../utils/cloudinary.config");
 const upload = multer({ storage });
-
-
 
 function isAuthenticated(req, res, next) {
     if (req.session.user) {
-        // If user is logged in, proceed to the next middleware/route
         return next();
     }
-    // If not logged in, redirect to login page
     res.redirect('/');
 }
 
 
 //route to get the user register page
 router.get('/register', (req, res) => {
-    res.render('user_register', { title: "User Register"})
+    try{
+        res.render('user_register', { title: "User Register"})
+    }catch(err){
+        next(err);
+    }
 })
 
 //route to post user register data to database
@@ -50,13 +50,18 @@ router.post("/register", upload.single("image"),async (req, res) => {
             });
         }
 
+        let uploadedImageUrl = null;
+        if (req.file) {
+            uploadedImageUrl = req.file.path;
+        }
+
         const hashPassword = await bcrypt.hash(req.body.password, 10);
 
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
-            image: req.file.path,
+            image: uploadedImageUrl,
             password: hashPassword
         });
 
@@ -68,7 +73,7 @@ router.post("/register", upload.single("image"),async (req, res) => {
         });
     } catch (err) {
         res.status(500).send("Internal Server Error");
-        console.error(err);
+        next(err);
     }
 })
 
@@ -119,11 +124,7 @@ router.post('/', async (req, res) => {
         res.redirect("/home");
     } catch (error) {
         console.error("Login Error:", error);
-        res.status(500).render('user_login', { 
-            title: "User Login", 
-            type: "danger", 
-            message: "Internal server error. Please try again later." 
-        });
+        next(err);
     }
 });
 
@@ -178,7 +179,7 @@ router.get('/home',isAuthenticated, async (req, res) => {
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
     }catch(err){
         console.error("Error fetching data:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 });
 
@@ -186,12 +187,10 @@ router.get('/home',isAuthenticated, async (req, res) => {
 router.get('/logout',(req,res)=>{
     try {
         req.session.destroy(() => {
-            // Disable caching
             res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
             res.header('Pragma', 'no-cache');
             res.header('Expires', '0');
 
-            // Redirect to login page after session destruction
             res.render('user_login', { 
                 title: "User Login", 
                 message: "Logged out successfully", 
@@ -200,227 +199,227 @@ router.get('/logout',(req,res)=>{
         });
     } catch (error) {
         console.error("Error in logout route:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 })
 
-
+function isAdminAuthenticated(req, res, next) {
+    if (req.session.admin) {
+        return next();
+    }
+    res.redirect('/admin');
+}
 
 //route to get the admin login
 router.get('/admin', (req, res) => {
-    res.render('admin_login', { title: "Admin Login"})
+    if (req.session.admin) {
+        return res.redirect('/admin_users');
+    }
+    res.render('admin_login', { title: "Admin Login" });
 })
-
 
 //route to post the data from admin login to databse for checking credentials
 router.post('/admin-login', async (req, res) => {
     try {
-        const adminemail = "admin@gmail.com";
-        const adminpassword = "admin123";
+        const adminemail = process.env.ADMIN_EMAIL || "admin@gmail.com"; // Use environment variables for security
+        const adminpassword = process.env.ADMIN_PASSWORD || "admin123"; // Use environment variables for security
 
         const { email, password } = req.body;
 
+        // Simple email and password check (You can replace this with a DB query and bcrypt for password hashing)
         if (email === adminemail && password === adminpassword) {
             req.session.admin = { email: adminemail };
-            res.redirect("/admin_users");
+            res.redirect("/admin_users"); // Redirect to the admin users page
         } else {
             res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
     } catch (error) {
         console.error("Error in admin-login route:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 });
 
 //route to get the admin users list
-router.get('/admin_users', async (req, res) => {
+router.get('/admin_users',isAdminAuthenticated, async (req, res) => {
     try {
-        if (req.session.admin) {
-            User.find().exec()
-                .then((users) => {
-                    res.render('admin_users', { title: "Admin users", users: users });
-                })
-                .catch((err) => {
-                    res.json({ message: err.message })
-                })
-        } else {
-            res.render('admin_login', { title: "Admin Login", type: "danger", message: "Relogin needed!" });
-        }
+        const users = await User.find().exec();
+        res.render('admin_users', { 
+            title: "Admin Users", 
+            users: users 
+        });
     } catch (error) {
-        console.error("Error in admin_dashboard route:", error);
-        res.status(500).send("Internal Server Error");
+        console.error("Error fetching users in admin_users route:", error);
+        next(err);
     }
 });
 
 //route to admin logout
 router.get('/admin-logout',(req,res)=>{
-    try{
-        req.session.admin = null
-    if(!req.session.admin){
-        res.header('cache-control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-        res.render('admin_login', { title: "Admin Login", message: "logout successfully", type : "success" })
-    }else{
-        console.log("Logout error");
-        res.redirect('/admin_dashboard')
-    }
-    }catch{
+    try {
+        req.session.admin = null; 
+        res.header('Cache-Control', 'no-cache, no-store, must-revalidate'); 
+        res.render('admin_login', { 
+            title: "Admin Login", 
+            message: "Logged out successfully", 
+            type: "success" 
+        });
+    } catch (error) {
         console.error("Error in admin-logout route:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 })
 
 //route to get user adding page
-router.get('/add-user', async (req, res) => {
+router.get('/add-user',isAdminAuthenticated, async (req, res) => {
     try {
-        if (req.session.admin) {
-            res.render("admin_add_user", { title: "Admin add User" })
-        } else {
-            res.render('admin_login', { title: "Admin Login", message: "", errmsg: "Relogin needed" });
-        }
+        res.render("admin_add_user", { title: "Admin add User" })
     } catch (err) {
         console.error("Error in admin-add-user route:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 })
 
 //route to post new user data to databse
-router.post('/add', async (req, res) => {
+router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res) => {
     try {
         const existinguser = await User.findOne({ email: req.body.email });
         if (existinguser) {
-            // If the email exists for another user, redirect back to the edit page
-            if (req.file) {
-                const imagePath = path.join(__dirname, "../uploads", req.file.filename);
-                fs.unlinkSync(imagePath);
-            }
             req.session.message = {
                 type: "danger",
-                message: "Email already exist!"
-            }
-            return res.redirect('/add-user');
+                message: "Email already exists!",
+            };
+            return res.redirect('/admin_users'); 
         }
-        //Hashing the password
-        const hpass = await bcrypt.hash(req.body.password, 10)
+
+        let uploadedImageUrl = null;
+        if (req.file) {
+            uploadedImageUrl = req.file.path; 
+        }
+
+        const hpass = await bcrypt.hash(req.body.password, 10);
+
         const user = new User({
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
             password: hpass,
-            image: req.file.filename,
-        })
-        await user.save()
+            image: uploadedImageUrl, 
+        });
+
+        await user.save();
+
         req.session.message = {
             type: "success",
-            message: "User added successfully.."
-        }
-        res.redirect("/admin_dashboard")
+            message: "User added successfully!",
+        };
+        res.redirect('/admin_users');
     } catch (error) {
         console.error("Error in admin-add-user route:", error);
-        res.status(500).send("Internal Server Error");
+        next(err);
     }
 })
 
 //route to get the admin user edit page
-router.get('/edit/:id', (req, res) => {
-    let id = req.params.id
-    User.findById(id)
-        .then((user) => {
-            if (user == null) {
-                res.redirect('/admin_dashboard')
-            } else {
-                res.render("admin_edit_user", { title: "Admin Edit User", user: user })
-            }
-        })
-        .catch((err) => {
-            res.redirect('/admin_dashboard')
-        })
+router.get('/edit/:id',isAdminAuthenticated, async(req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        res.render("admin_edit_user", { title: "Admin Edit User", user: user });
+    } catch (err) {
+        console.error("Error fetching user for edit:", err);
+        next(err);
+    }
 })
 
 //route to post the admin user edit / update data in to database
-router.post('/update/:id', async (req, res) => {
-    const id = req.params.id;
-    let new_img = "";
-
-    if (req.file) {
-        new_img = req.file.filename;
-        try {
-            fs.unlinkSync("./uploads/" + req.body.old_image);
-        } catch (err) {
-            console.error('Error deleting old image:', err);
-            return res.status(500).send("Internal Server Error");
-        }
-    } else {
-        new_img = req.body.old_image;
-    }
-
+router.post('/update/:id',async (req, res) => {
     try {
-        const existinguser = await User.findOne({ email: req.body.email });
-        if (existinguser && existinguser._id.toString() !== id) {
-            // If the email exists for another user, redirect back to the edit page
-            req.session.message = {
-                type: "danger",
-                message: "Email already exist!"
-            }
-            return res.redirect(`/edit/${id}`);
+        const id = req.params.id;
+
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser && existingUser._id.toString() !== id) {
+            return res.status(400).send({ message: "Email already exists!" });
         }
 
-        await User.findByIdAndUpdate(id, {
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            image: new_img,
-        });
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            {
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+            },
+            { new: true }
+        );
 
         if (req.session.admin) {
             req.session.message = {
                 type: "success",
-                message: "User updated successfully."
+                message: "User updated successfully.",
             };
-            res.redirect('/admin_dashboard');
+            return res.redirect('/admin_users');
         } else {
-            res.render("admin_login", { title: "Admin Login", type: "danger", message: "Relogin needed!" });
+            return res.render("admin_login", {
+                title: "Admin Login",
+                type: "danger",
+                message: "Relogin needed!",
+            });
         }
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Internal Server Error");
+        console.error("Error updating user:", err);
+        return res.status(500).send({ message: "An error occurred while updating the user." });
     }
 });
 
 
 //route to get the admin user delete
-router.get('/delete/:id', (req, res) => {
-    try{
-    let id = req.params.id
-    User.findByIdAndDelete(id)
-        .then((result) => {
-            if (result.image && result.image != "") {
-                try {
-                    fs.unlinkSync("./uploads/" + result.image)
-                } catch (err) {
-                    res.status(500).send(err.message);
-                }
-            }
+router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
+    try {
+        let id = req.params.id;
+
+        const user = await User.findById(id);
+        if (!user) {
             req.session.message = {
-                type: "success",
-                message: "User deleted successfuly.."
-            }
-            res.redirect('/admin_dashboard')
-        })
-        .catch((err) => {
-            if (req.session.admin) {
+                type: "danger",
+                message: "User not found!"
+            };
+            return res.redirect('/admin_users');
+        }
+
+        if (user.image) {
+            const publicId = user.image.split('/').pop().split('.')[0];
+
+            try {
+                await cloudinary.uploader.destroy(publicId);
+                await User.findByIdAndDelete(id);
+
+                req.session.message = {
+                    type: "success",
+                    message: "User deleted successfully."
+                };
+                return res.redirect('/admin_users');
+            } catch (cloudinaryError) {
                 req.session.message = {
                     type: "danger",
-                    message: "Error in user deletion!"
-                }
-                res.redirect('/admin_dashboard')
-                console.log("Error in user deleting ", err)
-            } else {
-                res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed!" })
+                    message: "Error deleting image from Cloudinary."
+                };
+                return res.redirect('/admin_users');
             }
-        })
-    }catch(err){
-        console.error(err);
-        res.status(500).send("Internal Server Error");
+        } else {
+            await User.findByIdAndDelete(id);
+
+            req.session.message = {
+                type: "success",
+                message: "User deleted successfully."
+            };
+            return res.redirect('/admin_users');
+        }
+
+    } catch (err) {
+        console.error("Error in user deletion: ", err);
+        next(err);
     }
 })
 
@@ -434,7 +433,7 @@ router.get('/editback', (req, res) => {
         }
     } catch (err) {
         res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed" })
-        console.log(err)
+        next(err);
     }
 })
 

@@ -3,6 +3,7 @@ const express = require('express')
 const session = require('express-session')
 const mongoose = require('mongoose')
 const MongoStore = require("connect-mongo")
+const bodyParser = require('body-parser');
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
@@ -48,12 +49,19 @@ app.use((req, res, next) => {
 });
 
 //middlewares
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 //Static file serving
 app.use('/static', express.static(path.join(__dirname, "public")))
 app.use(express.static("uploads"))
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).redirect(`/error?message=${encodeURIComponent(err.message || "Internal Server Error")}`);
+});
 
 //Routes
 app.use("", require("./routes/router"))
