@@ -98,11 +98,7 @@ router.post("/register", upload.single("image"),async (req, res) => {
         });
 
         await user.save();
-        res.render("user_login", { 
-            title: "User Login", 
-            message: "User registered successfully", 
-            type: "success" 
-        });
+        res.status(200).json({ message: "Registration successful!" });
     } catch (err) {
         res.status(500).send("Internal Server Error");
         next(err);
