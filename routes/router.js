@@ -335,7 +335,7 @@ router.get('/edit/:id',isAdminAuthenticated, async(req, res) => {
 })
 
 //route to post the admin user edit / update data in to database
-router.post('/update/:id',async (req, res) => {
+router.post('/update/:id',upload.single('image'), async (req, res) => {
     try {
         const id = req.params.id;
 
@@ -344,12 +344,31 @@ router.post('/update/:id',async (req, res) => {
             return res.status(400).send({ message: "Email already exists!" });
         }
 
+        let newImageUrl = req.body.old_image;
+
+        if (req.file) {
+            if (req.body.old_image) {
+                try{
+                    const oldImagePublicId = req.body.old_image.split('/').pop().split('.')[0];
+                    await cloudinary.uploader.destroy(oldImagePublicId);
+                }catch(err){
+                    req.session.message = {
+                        type: "danger",
+                        message: "User updation error.",
+                    };
+                    return res.redirect('/admin_users');
+                }
+            }
+            newImageUrl = req.file.path;
+        }
+
         const updatedUser = await User.findByIdAndUpdate(
             id,
             {
                 name: req.body.name,
                 email: req.body.email,
                 phone: req.body.phone,
+                image: newImageUrl
             },
             { new: true }
         );
@@ -424,17 +443,8 @@ router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
 })
 
 //route to return back from edit page to admin dashboard
-router.get('/editback', (req, res) => {
-    try {
-        if (!req.session.admin) {
-            res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed!" })
-        } else {
-            res.redirect('/admin_dashboard')
-        }
-    } catch (err) {
-        res.render("admin_login", { titlle: "Admin Login", type : "danger", message: "Relogin needed" })
-        next(err);
-    }
+router.get('/editback',isAdminAuthenticated, (req, res) => {
+    return res.redirect('/admin_users');
 })
 
 
