@@ -42,12 +42,12 @@
                                 <input type="tel" class="input" id="phone" name="phone" required>
                                 <label for="phone">Phone Number</label>
                             </div>
-                            <label class="mx-2" for="image">Profile image</label>
+                            <label class="form-control-sm" style="color: #5d5076;">Profile image</label>
                             <div class="input-field mb-2">
                                 <input type="file" name="image" class="form-control form-control-sm" id="imageInput"
-                                    required onchange="displayImage()">
+                                required onchange="displayImage()">
                             </div>
-                            <div class="input-field">
+                            <div class="input-field mt-4">
                                 <input type="password" class="input" id="password" name="password" required>
                                 <label for="pass">Password</label>
                             </div>
@@ -83,6 +83,16 @@
         crossorigin="anonymous"></script>
 
     <script>
+
+        ////// Alert hider \\\\\\
+        setTimeout(function () {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 3000);
+        
+        ////// To display image \\\\\\\
         function displayImage() {
             const input = document.getElementById('imageInput');
             const file = input.files[0];

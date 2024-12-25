@@ -43,16 +43,27 @@
                                                 <td>
                                                     <a href="/edit/<%= row._id %>" class="text-success"><i
                                                             class="fas fa-edit fa-lg mx-1"></i></a>
-                                                    <a href="/delete/<%= row._id %>" class="text-danger"><i
-                                                            class="fas fa-trash fa-lg mx-1"></i></a>
+                                                            <a href="/delete/<%= row._id %>" 
+                                                                class="text-danger" 
+                                                                onclick="confirmDelete(event, '<%= row._id %>')">
+                                                                <i class="fas fa-trash fa-lg mx-1"></i>
+                                                             </a>
                                                 </td>
                                             </tr>
                                             <% }) %>
                                     </tbody>
                                 </table>
                                 <% } else {%>
-                                    <h1 class="test-cnter test-seceondary mt-5">No Users found in the Databse</h1>
-                                    <% } %>
+                                    <div class="container text-center py-5">
+                                        <div class="card shadow-lg p-4">
+                                            <h1 class="text-danger fw-bold">No Users Found</h1>
+                                            <p class="text-muted">It seems like there are no users in the database at the moment.</p>
+                                            <div class="mt-4">
+                                                <a href="/add-user" class="btn btn-primary btn-lg">Add New User</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% } %>
                         </div>
             </div>
         </div>
@@ -61,6 +72,7 @@
 
 
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -70,18 +82,39 @@
     <script src="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.js"></script>
     <script>
 
+        ////// table manager \\\\\\
         $(document).ready(function () {
             $("table").DataTable({
                 order: [0, 'desc']
             })
         })
 
+        ////// Alert hider \\\\\\
         setTimeout(function () {
             const alert = document.querySelector('.alert');
             if (alert) {
                 alert.style.display = 'none';
             }
         }, 3000);
+
+        ////// delete confirmation \\\\\\
+        function confirmDelete(event, userId) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/delete/${userId}`;
+            }
+        });
+    }
     </script>
 </body>
 

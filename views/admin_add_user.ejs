@@ -46,7 +46,7 @@
                                 <input type="text" class="input" id="password" name="password" required>
                                 <label for="password">Password</label>
                             </div>
-                            <label for="image" class="form-label mx-2">Select image</label>
+                            <label for="image" class="form-control-sm" style="color: #5d5076;">Select image</label>
                             <div class="input-field mb-2">
                                 <input type="file" name="image" class="form-control form-control-md" id="imageInput"
                                     onchange="displayImage()">
@@ -83,6 +83,15 @@
         crossorigin="anonymous"></script>
 
     <script>
+        ////// Alert hider \\\\\\
+        setTimeout(function () {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 3000);
+
+        ////// To display image \\\\\\
         function displayImage() {
             const input = document.getElementById('imageInput');
             const file = input.files[0];

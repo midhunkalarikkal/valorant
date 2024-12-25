@@ -111,15 +111,11 @@ i {
     transition: .5s;
 }
 
-.input-field input:focus~label {
-    top: -10px;
-    font-size: 13px;
-}
-
-.input-field input:valid~label {
-    top: -10px;
-    font-size: 13px;
-    color: #5d5076;
+.input-field input:focus ~ label,
+.input-field input:not(:placeholder-shown) ~ label {
+  top: -10px;
+  font-size: 13px;
+  color: #5d5076;
 }
 
 .input-field .input:focus,
