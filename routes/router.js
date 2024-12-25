@@ -41,6 +41,38 @@ router.post("/register", upload.single("image"),async (req, res) => {
             });
         }
 
+        if (!/^[A-Za-z\s]{4,20}$/.test(req.body.name)) {
+            return res.render("user_register", {
+                title: "User Register",
+                type: "danger",
+                message: "Invalid name. Name must be 4-20 characters long and contain only alphabets and spaces."
+            });
+        }
+        
+        if (!req.body.email.endsWith("@gmail.com")) {
+            return res.render("user_register", {
+                title: "User Register",
+                type: "danger",
+                message: "Invalid email. Email must end with '@gmail.com'."
+            });
+        }
+        
+        if (!/^[0-9]{10}$/.test(req.body.phone)) {
+            return res.render("user_register", {
+                title: "User Register",
+                type: "danger",
+                message: "Invalid phone number. Phone number must contain exactly 10 digits."
+            });
+        }
+        
+        if (!/^.{8,}$/.test(req.body.password)) {
+            return res.render("user_register", {
+                title: "User Register",
+                type: "danger",
+                message: "Invalid password. Password must be at least 8 characters long."
+            });
+        }
+
         const existingUser = await User.findOne({ email: req.body.email });
         if (existingUser) {
             return res.render("user_register", { 

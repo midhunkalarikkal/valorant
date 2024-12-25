@@ -71,21 +71,6 @@
                 alert.style.display = 'none';
             }
         }, 3000);
-
-        ////// form validation \\\\\\
-        document.getElementById("add-form").addEventListener("submit", function (e) {
-            e.preventDefault();
-
-            const email = document.getElementById("email").value.trim();
-
-            if (!email.endsWith("@gmail.com")) {
-                return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
-            }
-
-            if (password.length < 8) {
-                return Swal.fire("Error", "Password must be at least 8 characters long.", "error");
-            }
-        });
     </script>
 </body>
 
