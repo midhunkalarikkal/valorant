@@ -1,14 +1,13 @@
-require("dotenv").config()
-const express = require('express')
-const session = require('express-session')
-const mongoose = require('mongoose')
-const MongoStore = require("connect-mongo")
+require("dotenv").config();
+const express = require('express');
+const session = require('express-session');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const path = require('path')
-const cookieParser = require('cookie-parser')
+const path = require('path');
+const cookieParser = require('cookie-parser');
 
-const app = express()
-const PORT = process.env.PORT || 7000
+const app = express();
+const PORT = process.env.PORT || 7000;
 
 mongoose.connect(process.env.DB_URI)
     .then((result) => {
@@ -17,13 +16,14 @@ mongoose.connect(process.env.DB_URI)
         })
     })
     .catch((err) => {
-        console.log("MongoDB connection error!")
+        console.log("MongoDB connection error!");
+        console.log(err);
         process.exit(1)
-    })
+    });
 
 
 // session
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(session({
     secret: "my secret key",
     saveUninitialized: true,
@@ -34,7 +34,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 2,
         sameSite: true,
     }
-}))
+}));
 
 
 app.use((req, res, next) => {

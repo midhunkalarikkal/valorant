@@ -1,13 +1,8 @@
 const express = require("express")
 const router = express.Router()
-const session = require('express-session')
-const MongoStore = require("connect-mongo")
 const User = require('../models/user')
 const Valorant = require('valorant-api-js')
-const fs = require('fs')
-const path = require('path')
 const bcrypt = require('bcrypt')
-const { default: axios } = require("axios")
 
 const multer = require('multer')
 const { cloudinary, storage } = require("../utils/cloudinary.config");
@@ -26,7 +21,7 @@ router.get('/register', (req, res) => {
     try{
         res.render('user_register', { title: "User Register"})
     }catch(err){
-        next(err);
+        res.redirect('/');
     }
 })
 
@@ -100,8 +95,7 @@ router.post("/register", upload.single("image"),async (req, res) => {
         await user.save();
         res.status(200).json({ message: "Registration successful!" });
     } catch (err) {
-        res.status(500).send("Internal Server Error");
-        next(err);
+        res.render('error')
     }
 })
 
@@ -147,8 +141,7 @@ router.post('/', async (req, res) => {
         req.session.user = user;
         res.redirect("/home");
     } catch (error) {
-        console.error("Login Error:", error);
-        next(err);
+        res.render('error')
     }
 });
 
@@ -197,13 +190,13 @@ router.get('/home',isAuthenticated, async (req, res) => {
         const maps = await client.getMaps()
         const filteredMaps = maps.data.map((map)=>({
             name : map.displayName,
-            image : map.splash
+            image : map.splash,
+            uuid : map.uuid
         }))
 
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
     }catch(err){
-        console.error("Error fetching data:", error);
-        next(err);
+        res.render('error')
     }
 });
 
@@ -257,8 +250,7 @@ router.post('/admin-login', async (req, res) => {
             res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
     } catch (error) {
-        console.error("Error in admin-login route:", error);
-        next(err);
+        res.render('error')
     }
 });
 
@@ -271,8 +263,7 @@ router.get('/admin_users',isAdminAuthenticated, async (req, res) => {
             users: users 
         });
     } catch (error) {
-        console.error("Error fetching users in admin_users route:", error);
-        next(err);
+        res.render('error')
     }
 });
 
@@ -287,8 +278,7 @@ router.get('/admin-logout',(req,res)=>{
             type: "success" 
         });
     } catch (error) {
-        console.error("Error in admin-logout route:", error);
-        next(err);
+        res.render('error')
     }
 })
 
@@ -297,8 +287,7 @@ router.get('/add-user',isAdminAuthenticated, async (req, res) => {
     try {
         res.render("admin_add_user", { title: "Admin add User" })
     } catch (err) {
-        console.error("Error in admin-add-user route:", error);
-        next(err);
+        res.redirect('/admin_users');
     }
 })
 
@@ -337,8 +326,7 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
         };
         res.redirect('/admin_users');
     } catch (error) {
-        console.error("Error in admin-add-user route:", error);
-        next(err);
+        res.render('error')
     }
 })
 
@@ -352,8 +340,7 @@ router.get('/edit/:id',isAdminAuthenticated, async(req, res) => {
         }
         res.render("admin_edit_user", { title: "Admin Edit User", user: user });
     } catch (err) {
-        console.error("Error fetching user for edit:", err);
-        next(err);
+        res.redirect('/admin_users');
     }
 })
 
@@ -410,8 +397,7 @@ router.post('/update/:id',upload.single('image'), async (req, res) => {
             });
         }
     } catch (err) {
-        console.error("Error updating user:", err);
-        return res.status(500).send({ message: "An error occurred while updating the user." });
+        res.render('error')
     }
 });
 
@@ -460,8 +446,7 @@ router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
         }
 
     } catch (err) {
-        console.error("Error in user deletion: ", err);
-        next(err);
+        res.render('error')
     }
 })
 
