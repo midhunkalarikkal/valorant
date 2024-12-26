@@ -56,7 +56,6 @@ app.use(express.json())
 
 //Static file serving
 app.use('/static', express.static(path.join(__dirname, "public")))
-app.use(express.static("uploads"))
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

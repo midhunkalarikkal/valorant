@@ -162,21 +162,18 @@
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // Perform validation
         const isNameValid = validateName();
         const isEmailValid = validateEmail();
         const isPhoneValid = validatePhone();
         const isPasswordValid = validatePassword();
 
         if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid) {
-            return; // Stop submission if validation fails
+            return; 
         }
 
-        // Collect form data
         const formData = new FormData(form);
 
         try {
-            // Send data to backend
             const response = await fetch(form.action, {
                 method: "POST",
                 body: formData,
@@ -184,10 +181,9 @@
 
             const result = await response.json();
 
-            // Show SweetAlert based on server response
             if (response.ok) {
                 Swal.fire("Success!", result.message || "Registration successful.", "success");
-                form.reset(); // Reset form after success
+                form.reset();
             } else {
                 Swal.fire("Error", result.message || "Something went wrong.", "error");
             }
