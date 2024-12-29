@@ -52,7 +52,7 @@
                                     onchange="displayImage()" required>
                             </div>
                             <div class="input-field d-flex flex-row">
-                                <button type="submit" class="btn w-50"
+                                <button type="submit" class="btn w-50" id="submitBtn"
                                     style="background-color: #ff4654; color: aliceblue;">Add User</button>
                                 <div class="hidden" style="color: rgba(240, 248, 255, 0);">_</div>
                                 <a href="/editback" class="btn  w-50"
@@ -110,41 +110,149 @@
         }
 
         ////// form validation \\\\\\
-        document.getElementById("add-form").addEventListener("submit", function (e) {
-        e.preventDefault();
+    //     document.getElementById("add-form").addEventListener("submit", function (e) {
+    //     e.preventDefault();
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const password = document.getElementById("password").value;
+    //     const name = document.getElementById("name").value.trim();
+    //     const email = document.getElementById("email").value.trim();
+    //     const phone = document.getElementById("phone").value.trim();
+    //     const password = document.getElementById("password").value;
 
-        const nameRegex = /^[A-Za-z\s]{4,20}$/;
-        if (!nameRegex.test(name)) {
-            return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
-        }
+    //     const nameRegex = /^[A-Za-z\s]{4,20}$/;
+    //     if (!nameRegex.test(name)) {
+    //         return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
+    //     }
 
-        if (!email.endsWith("@gmail.com")) {
-            return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
-        }
+    //     if (!email.endsWith("@gmail.com")) {
+    //         return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
+    //     }
 
-        const phoneRegex = /^[0-9]{10}$/;
-        if (!phoneRegex.test(phone)) {
-            return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
-        }
+    //     const phoneRegex = /^[0-9]{10}$/;
+    //     if (!phoneRegex.test(phone)) {
+    //         return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
+    //     }
 
-        if (password.length < 8) {
-            return Swal.fire("Error", "Password must be at least 8 characters long.", "error");
-        }
+    //     if (password.length < 8) {
+    //         return Swal.fire("Error", "Password must be at least 8 characters long.", "error");
+    //     }
 
-        Swal.fire({
-            title: "Success!",
-            text: "Details validated.",
-            icon: "success",
-            confirmButtonText: "Send",
-        }).then(() => {
-            e.target.submit();
+    //     Swal.fire({
+    //         title: "Success!",
+    //         text: "Details validated.",
+    //         icon: "success",
+    //         confirmButtonText: "Send",
+    //     }).then(() => {
+    //         e.target.submit();
+    //     });
+    // });
+
+    document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("add-form");
+            const submitBtn = document.getElementById("submitBtn");
+
+            // Validation Functions
+            function validateName() {
+                const name = document.getElementById("name").value.trim();
+                const nameRegex = /^[A-Za-z\s]{4,20}$/;
+                if (!nameRegex.test(name)) {
+                    Swal.fire("Invalid Name", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            function validateEmail() {
+                const email = document.getElementById("email").value.trim();
+                if (!email.endsWith("@gmail.com")) {
+                    Swal.fire("Invalid Email", "Email must end with '@gmail.com'.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            function validatePhone() {
+                const phone = document.getElementById("phone").value.trim();
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(phone)) {
+                    Swal.fire("Invalid Phone Number", "Phone number must contain exactly 10 digits.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            function validatePassword() {
+                const password = document.getElementById("password").value;
+                if (password.length < 8) {
+                    Swal.fire("Invalid Password", "Password must be at least 8 characters long.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            // Form Submission Handler
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const isNameValid = validateName();
+                const isEmailValid = validateEmail();
+                const isPhoneValid = validatePhone();
+                const isPasswordValid = validatePassword();
+
+                if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid) {
+                    return; 
+                }
+
+                const formData = new FormData(form);
+
+                try {
+                    showLoading();
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+                    Swal.close();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Successfull",
+                            text: data.message,
+                            timer: 2000,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            window.location.href = data.redirectUrl;
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: data.message,
+                        });
+                    }
+                } catch (err) {
+                    Swal.close();
+                    Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "An error occurred, please try again later",
+                    });
+                }
+            });
         });
-    });
+
+        function showLoading() {
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
     </script>
 </body>
 

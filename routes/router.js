@@ -298,11 +298,10 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
     try {
         const existinguser = await User.findOne({ email: req.body.email });
         if (existinguser) {
-            req.session.message = {
-                type: "danger",
-                message: "Email already exists!",
-            };
-            return res.redirect('/admin_users'); 
+            return res.json({
+                success: false,
+                message: "Already registered with this email.",
+            });
         }
 
         let uploadedImageUrl = null;
@@ -321,12 +320,12 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
         });
 
         await user.save();
-
-        req.session.message = {
-            type: "success",
-            message: "User added successfully!",
-        };
-        res.redirect('/admin_users');
+        
+        return res.json({
+            success: true,
+            message: "User added successfully..",
+            redirectUrl : "/admin_users"
+        });
     } catch (err) {
         next(err);
     }
