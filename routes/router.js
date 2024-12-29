@@ -26,7 +26,7 @@ router.get('/register', (req, res, next) => {
 })
 
 //route to post user register data to database
-router.post("/register", upload.single("image"),async (req, res) => {
+router.post("/register", upload.single("image"),async (req, res, next) => {
     try {
         if (req.body.password !== req.body.cpass) {
             return res.status(400).json({
@@ -94,7 +94,7 @@ router.post("/register", upload.single("image"),async (req, res) => {
 })
 
 //route to get the user login page
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     try{
         if (req.session.user) {
             return res.redirect('/home');
@@ -106,7 +106,7 @@ router.get('/', (req, res) => {
 });
 
 //route to check login data in database and redirecting to home page
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
@@ -145,7 +145,7 @@ router.post('/', async (req, res) => {
 });
 
 //route to get the home page
-router.get('/home',isAuthenticated, async (req, res) => {
+router.get('/home',isAuthenticated, async (req, res, next) => {
     try{
     res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.header('Pragma', 'no-cache');
@@ -200,7 +200,7 @@ router.get('/home',isAuthenticated, async (req, res) => {
 });
 
 //route to logout from homepage
-router.get('/logout',(req,res)=>{
+router.get('/logout',(req,res, next)=>{
     try {
         req.session.destroy(() => {
             res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -226,7 +226,7 @@ function isAdminAuthenticated(req, res, next) {
 }
 
 //route to get the admin login
-router.get('/admin', (req, res) => {
+router.get('/admin', (req, res, next) => {
     try{
         if (req.session.admin) {
             return res.redirect('/admin_users');
@@ -238,7 +238,7 @@ router.get('/admin', (req, res) => {
 })
 
 //route to post the data from admin login to databse for checking credentials
-router.post('/admin-login', async (req, res) => {
+router.post('/admin-login', async (req, res, next) => {
     try {
         const adminemail = process.env.ADMIN_EMAIL || "admin@gmail.com";
         const adminpassword = process.env.ADMIN_PASSWORD || "admin123"; 
@@ -257,7 +257,7 @@ router.post('/admin-login', async (req, res) => {
 });
 
 //route to get the admin users list
-router.get('/admin_users',isAdminAuthenticated, async (req, res) => {
+router.get('/admin_users',isAdminAuthenticated, async (req, res, next) => {
     try {
         const users = await User.find().exec();
         res.render('admin_users', { 
@@ -270,7 +270,7 @@ router.get('/admin_users',isAdminAuthenticated, async (req, res) => {
 });
 
 //route to admin logout
-router.get('/admin-logout',(req,res)=>{
+router.get('/admin-logout',(req,res, next)=>{
     try {
         req.session.admin = null; 
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate'); 
@@ -285,7 +285,7 @@ router.get('/admin-logout',(req,res)=>{
 })
 
 //route to get user adding page
-router.get('/add-user',isAdminAuthenticated, async (req, res) => {
+router.get('/add-user',isAdminAuthenticated, async (req, res, next) => {
     try {
         res.render("admin_add_user", { title: "Admin add User" })
     } catch (err) {
@@ -294,7 +294,7 @@ router.get('/add-user',isAdminAuthenticated, async (req, res) => {
 })
 
 //route to post new user data to databse
-router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res) => {
+router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res, next) => {
     try {
         const existinguser = await User.findOne({ email: req.body.email });
         if (existinguser) {
@@ -333,7 +333,7 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
 })
 
 //route to get the admin user edit page
-router.get('/edit/:id',isAdminAuthenticated, async(req, res) => {
+router.get('/edit/:id',isAdminAuthenticated, async(req, res, next) => {
     try {
         const id = req.params.id;
         const user = await User.findById(id);
@@ -347,7 +347,7 @@ router.get('/edit/:id',isAdminAuthenticated, async(req, res) => {
 })
 
 //route to post the admin user edit / update data in to database
-router.post('/update/:id',upload.single('image'), async (req, res) => {
+router.post('/update/:id',upload.single('image'), async (req, res, next) => {
     try {
         const id = req.params.id;
 
@@ -405,7 +405,7 @@ router.post('/update/:id',upload.single('image'), async (req, res) => {
 
 
 //route to get the admin user delete
-router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
+router.get('/delete/:id',isAdminAuthenticated, async(req, res, next) => {
     try {
         let id = req.params.id;
 
@@ -453,7 +453,7 @@ router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
 })
 
 //route to return back from edit page to admin dashboard
-router.get('/editback',isAdminAuthenticated, (req, res) => {
+router.get('/editback',isAdminAuthenticated, (req, res, next) => {
     return res.redirect('/admin_users');
 })
 
