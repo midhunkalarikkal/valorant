@@ -17,11 +17,11 @@ function isAuthenticated(req, res, next) {
 
 
 //route to get the user register page
-router.get('/register', (req, res) => {
-    try{
-        res.render('user_register', { title: "User Register"})
-    }catch(err){
-        res.redirect('/');
+router.get('/register', (req, res, next) => {
+    try {
+        return res.render('user_register', { title: "User Register" });
+    } catch (err) {
+        next(err);
     }
 })
 
@@ -29,51 +29,45 @@ router.get('/register', (req, res) => {
 router.post("/register", upload.single("image"),async (req, res) => {
     try {
         if (req.body.password !== req.body.cpass) {
-            return res.render("user_register", { 
-                title: "User Register", 
-                type: "danger", 
-                message: "Password is not matching!" 
+            return res.status(400).json({
+                success: false,
+                message: "Password is not matching!.",
             });
         }
 
         if (!/^[A-Za-z\s]{4,20}$/.test(req.body.name)) {
-            return res.render("user_register", {
-                title: "User Register",
-                type: "danger",
-                message: "Invalid name. Name must be 4-20 characters long and contain only alphabets and spaces."
+            return res.status(400).json({
+                success: false,
+                message: "Invalid name. Name must be 4-20 characters long and contain only alphabets and spaces..",
             });
         }
         
         if (!req.body.email.endsWith("@gmail.com")) {
-            return res.render("user_register", {
-                title: "User Register",
-                type: "danger",
-                message: "Invalid email. Email must end with '@gmail.com'."
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email. Email must end with '@gmail.com'.",
             });
         }
         
         if (!/^[0-9]{10}$/.test(req.body.phone)) {
-            return res.render("user_register", {
-                title: "User Register",
-                type: "danger",
-                message: "Invalid phone number. Phone number must contain exactly 10 digits."
+            return res.status(400).json({
+                success: false,
+                message: "Invalid phone number. Phone number must contain exactly 10 digits.",
             });
         }
         
         if (!/^.{8,}$/.test(req.body.password)) {
-            return res.render("user_register", {
-                title: "User Register",
-                type: "danger",
-                message: "Invalid password. Password must be at least 8 characters long."
+            return res.status(400).json({
+                success: false,
+                message: "Invalid password. Password must be at least 8 characters long.",
             });
         }
 
         const existingUser = await User.findOne({ email: req.body.email });
         if (existingUser) {
-            return res.render("user_register", { 
-                title: "User Register", 
-                type: "danger", 
-                message: "Email already in use!" 
+            return res.status(400).json({
+                success: false,
+                message: "Email already in use!.",
             });
         }
 
@@ -93,18 +87,22 @@ router.post("/register", upload.single("image"),async (req, res) => {
         });
 
         await user.save();
-        res.status(200).json({ message: "Registration successful!" });
+        return res.status(200).json({ success : true, message: "Registration successful!", redirectUrl : "/" });
     } catch (err) {
-        res.render('error')
+        next(err);
     }
 })
 
 //route to get the user login page
 router.get('/', (req, res) => {
-    if (req.session.user) {
-        return res.redirect('/home');
+    try{
+        if (req.session.user) {
+            return res.redirect('/home');
+        }
+        res.render('user_login', { title: "User Login" });
+    }catch (err) {
+        next(err);
     }
-    res.render('user_login', { title: "User Login" });
 });
 
 //route to check login data in database and redirecting to home page
@@ -113,35 +111,36 @@ router.post('/', async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.render('user_login', { 
-                title: "User Login", 
-                type: "danger", 
-                message: "Please provide both email and password" 
+            return res.status(400).json({
+                success: false,
+                message: "Please provide both email and password.",
             });
         }
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.render('user_login', { 
-                title: "User Login", 
-                type: "danger", 
-                message: "No user found with the provided email" 
+            return res.status(400).json({
+                success: false,
+                message: "No user found with the provided email.",
             });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.render('user_login', { 
-                title: "User Login", 
-                type: "danger", 
-                message: "Incorrect password" 
+            return res.status(400).json({
+                success: false,
+                message: "Incorrect password.",
             });
         }
 
         req.session.user = user;
-        res.redirect("/home");
-    } catch (error) {
-        res.render('error')
+        return res.json({
+            success: true,
+            message: "Login successful! Redirecting...",
+            redirectUrl: "/home",
+        });
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -196,7 +195,7 @@ router.get('/home',isAuthenticated, async (req, res) => {
 
         res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
     }catch(err){
-        res.render('error')
+        next(err);
     }
 });
 
@@ -214,8 +213,7 @@ router.get('/logout',(req,res)=>{
                 type: "success" 
             });
         });
-    } catch (error) {
-        console.error("Error in logout route:", error);
+    } catch (err) {
         next(err);
     }
 })
@@ -229,10 +227,14 @@ function isAdminAuthenticated(req, res, next) {
 
 //route to get the admin login
 router.get('/admin', (req, res) => {
-    if (req.session.admin) {
-        return res.redirect('/admin_users');
+    try{
+        if (req.session.admin) {
+            return res.redirect('/admin_users');
+        }
+        res.render('admin_login', { title: "Admin Login" });
+    }catch(err){
+        next(err);
     }
-    res.render('admin_login', { title: "Admin Login" });
 })
 
 //route to post the data from admin login to databse for checking credentials
@@ -249,8 +251,8 @@ router.post('/admin-login', async (req, res) => {
         } else {
             res.render("admin_login", { title: "Admin Login", type: "danger", message: "Invalid Credentials!" });
         }
-    } catch (error) {
-        res.render('error')
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -262,8 +264,8 @@ router.get('/admin_users',isAdminAuthenticated, async (req, res) => {
             title: "Admin Users", 
             users: users 
         });
-    } catch (error) {
-        res.render('error')
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -277,8 +279,8 @@ router.get('/admin-logout',(req,res)=>{
             message: "Logged out successfully", 
             type: "success" 
         });
-    } catch (error) {
-        res.render('error')
+    } catch (err) {
+        next(err);
     }
 })
 
@@ -325,8 +327,8 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
             message: "User added successfully!",
         };
         res.redirect('/admin_users');
-    } catch (error) {
-        res.render('error')
+    } catch (err) {
+        next(err);
     }
 })
 
@@ -397,7 +399,7 @@ router.post('/update/:id',upload.single('image'), async (req, res) => {
             });
         }
     } catch (err) {
-        res.render('error')
+        next(err);
     }
 });
 
@@ -446,7 +448,7 @@ router.get('/delete/:id',isAdminAuthenticated, async(req, res) => {
         }
 
     } catch (err) {
-        res.render('error')
+        next(err);
     }
 })
 

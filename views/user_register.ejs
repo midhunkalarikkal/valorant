@@ -44,7 +44,7 @@
                             </div>
                             <label class="form-control-sm" style="color: #5d5076;">Profile image</label>
                             <div class="input-field mb-2">
-                                <input type="file" name="image" class="form-control form-control-sm" id="imageInput" required>
+                                <input type="file" name="image" class="form-control form-control-sm" id="imageInput" required onchange="displayImage()">
                             </div>
                             <div class="input-field mt-4">
                                 <input type="password" class="input" id="password" name="password" required>
@@ -111,88 +111,117 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("registerForm");
-    const submitBtn = document.getElementById("submitBtn");
+            const form = document.getElementById("registerForm");
+            const submitBtn = document.getElementById("submitBtn");
 
-    // Validation Functions
-    function validateName() {
-        const name = document.getElementById("name").value.trim();
-        const nameRegex = /^[A-Za-z\s]{4,20}$/;
-        if (!nameRegex.test(name)) {
-            Swal.fire("Invalid Name", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
-            return false;
-        }
-        return true;
-    }
-
-    function validateEmail() {
-        const email = document.getElementById("email").value.trim();
-        if (!email.endsWith("@gmail.com")) {
-            Swal.fire("Invalid Email", "Email must end with '@gmail.com'.", "error");
-            return false;
-        }
-        return true;
-    }
-
-    function validatePhone() {
-        const phone = document.getElementById("phone").value.trim();
-        const phoneRegex = /^[0-9]{10}$/;
-        if (!phoneRegex.test(phone)) {
-            Swal.fire("Invalid Phone Number", "Phone number must contain exactly 10 digits.", "error");
-            return false;
-        }
-        return true;
-    }
-
-    function validatePassword() {
-        const password = document.getElementById("password").value;
-        const cpass = document.getElementById("cpass").value;
-        if (password.length < 8) {
-            Swal.fire("Invalid Password", "Password must be at least 8 characters long.", "error");
-            return false;
-        }
-        if (password !== cpass) {
-            Swal.fire("Password Mismatch", "Passwords do not match.", "error");
-            return false;
-        }
-        return true;
-    }
-
-    // Form Submission Handler
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const isNameValid = validateName();
-        const isEmailValid = validateEmail();
-        const isPhoneValid = validatePhone();
-        const isPasswordValid = validatePassword();
-
-        if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid) {
-            return; 
-        }
-
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(form.action, {
-                method: "POST",
-                body: formData,
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                Swal.fire("Success!", result.message || "Registration successful.", "success");
-                form.reset();
-            } else {
-                Swal.fire("Error", result.message || "Something went wrong.", "error");
+            // Validation Functions
+            function validateName() {
+                const name = document.getElementById("name").value.trim();
+                const nameRegex = /^[A-Za-z\s]{4,20}$/;
+                if (!nameRegex.test(name)) {
+                    Swal.fire("Invalid Name", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
+                    return false;
+                }
+                return true;
             }
-        } catch (error) {
-            Swal.fire("Error", "Failed to connect to the server.", "error");
-        }
-    });
-});
 
+            function validateEmail() {
+                const email = document.getElementById("email").value.trim();
+                if (!email.endsWith("@gmail.com")) {
+                    Swal.fire("Invalid Email", "Email must end with '@gmail.com'.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            function validatePhone() {
+                const phone = document.getElementById("phone").value.trim();
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!phoneRegex.test(phone)) {
+                    Swal.fire("Invalid Phone Number", "Phone number must contain exactly 10 digits.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            function validatePassword() {
+                const password = document.getElementById("password").value;
+                const cpass = document.getElementById("cpass").value;
+                if (password.length < 8) {
+                    Swal.fire("Invalid Password", "Password must be at least 8 characters long.", "error");
+                    return false;
+                }
+                if (password !== cpass) {
+                    Swal.fire("Password Mismatch", "Passwords do not match.", "error");
+                    return false;
+                }
+                return true;
+            }
+
+            // Form Submission Handler
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const isNameValid = validateName();
+                const isEmailValid = validateEmail();
+                const isPhoneValid = validatePhone();
+                const isPasswordValid = validatePassword();
+
+                if (!isNameValid || !isEmailValid || !isPhoneValid || !isPasswordValid) {
+                    return; 
+                }
+
+                const formData = new FormData(form);
+
+                try {
+                    showLoading();
+                    const response = await fetch(form.action, {
+                        method: "POST",
+                        body: formData,
+                    });
+
+                    const data = await response.json();
+                    Swal.close();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Login Successful",
+                            text: data.message,
+                            timer: 2000,
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                        }).then(() => {
+                            window.location.href = data.redirectUrl;
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Login Failed",
+                            text: data.message,
+                        });
+                    }
+                } catch (err) {
+                    Swal.close();
+                    Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "An error occurred, please try again later",
+                    });
+                }
+            });
+        });
+
+        function showLoading() {
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
         
     </script>
 </body>

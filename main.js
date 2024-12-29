@@ -57,13 +57,19 @@ app.use(express.json())
 //Static file serving
 app.use('/static', express.static(path.join(__dirname, "public")))
 
+// Routes
+app.use("", require("./routes/router"))
+
+// Error handling   
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).redirect(`/error?message=${encodeURIComponent(err.message || "Internal Server Error")}`);
+    res.status(err.status || 500).render('error', {
+        message: err.message || "An unexpected error occurred.",
+        status: err.status || 500
+    });
 });
 
 //Routes
-app.use("", require("./routes/router"))
 
 //view engine
 app.set("view engine", "ejs")
