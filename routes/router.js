@@ -153,47 +153,63 @@ router.get('/home',isAuthenticated, async (req, res, next) => {
         const config = {language : "en-US"}
         const client = new Valorant(config)
 
-        const gameModes = await client.getGamemodes()
+        const gameModes = await client.getGamemodes();
+        const competitiveTiers = await client.getCompetitiveTiers();
+        const weapons = await client.getWeapons();
+        const agents = await client.getAgents();
+        const maps = await client.getMaps();
+
+        if (!gameModes || !gameModes.data || !competitiveTiers || !competitiveTiers.data || 
+            !weapons || !weapons.data || !agents || !agents.data || 
+            !maps || !maps.data) {
+            throw new Error("API fetching is slow or data is missing. Please wait and refresh.");
+        }
+
         const filteredGameModes = gameModes.data.map(mode => ({
             displayName: mode.displayName,
             description: mode.description,
             duration: mode.duration,
             displayIcon: mode.displayIcon,
-        }))
+        }));
 
-        const competitiveTiers = await client.getCompetitiveTiers()
-        const latestCompetitiveTier = competitiveTiers.data[competitiveTiers.data.length - 1].tiers
-        const tier = latestCompetitiveTier.map((tier)=>({
+        const latestCompetitiveTier = competitiveTiers.data[competitiveTiers.data.length - 1].tiers;
+        const tier = latestCompetitiveTier.map((tier) => ({
             tier: tier.tier,
-            tierName : tier.tierName,
-            bg : tier.backgroundColor,
-            icon : tier.largeIcon
-        }))
-        const newtier = tier.slice(3,tier.length)
+            tierName: tier.tierName,
+            bg: tier.backgroundColor,
+            icon: tier.largeIcon
+        }));
+        const newtier = tier.slice(3, tier.length);
 
-        
-        const weapons = await client.getWeapons()
-        const filteredWeapons = weapons.data.map((weapon)=>({
-            name : weapon.displayName,
-            image : weapon.displayIcon
-        }))
+        const filteredWeapons = weapons.data.map((weapon) => ({
+            name: weapon.displayName,
+            image: weapon.displayIcon
+        }));
 
-        const agents = await client.getAgents()
         const filteredAgents = agents.data
-        .filter(agent => agent.isPlayableCharacter)
-        .map((agent)=>({
-            name : agent.displayName,
-            icon : agent.displayIcon
-        }))
-        
-        const maps = await client.getMaps()
-        const filteredMaps = maps.data.map((map)=>({
-            name : map.displayName,
-            image : map.splash,
-            uuid : map.uuid
-        }))
+            .filter(agent => agent.isPlayableCharacter)
+            .map((agent) => ({
+                name: agent.displayName,
+                icon: agent.displayIcon
+            }));
 
-        res.render('home', { title: "Home Page", name: req.session.user.name, image: req.session.user.image, email: req.session.user.email, gameModes : filteredGameModes, tiers : newtier, weapons : filteredWeapons, agents : filteredAgents, maps : filteredMaps });
+        const filteredMaps = maps.data.map((map) => ({
+            name: map.displayName,
+            image: map.splash,
+            uuid: map.uuid
+        }));
+
+        res.render('home', {
+            title: "Home Page",
+            name: req.session.user.name,
+            image: req.session.user.image,
+            email: req.session.user.email,
+            gameModes: filteredGameModes,
+            tiers: newtier,
+            weapons: filteredWeapons,
+            agents: filteredAgents,
+            maps: filteredMaps
+        });
     }catch(err){
         next(err);
     }
