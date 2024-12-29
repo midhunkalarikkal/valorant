@@ -109,43 +109,7 @@
             }
         }
 
-        ////// form validation \\\\\\
-    //     document.getElementById("add-form").addEventListener("submit", function (e) {
-    //     e.preventDefault();
-
-    //     const name = document.getElementById("name").value.trim();
-    //     const email = document.getElementById("email").value.trim();
-    //     const phone = document.getElementById("phone").value.trim();
-    //     const password = document.getElementById("password").value;
-
-    //     const nameRegex = /^[A-Za-z\s]{4,20}$/;
-    //     if (!nameRegex.test(name)) {
-    //         return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
-    //     }
-
-    //     if (!email.endsWith("@gmail.com")) {
-    //         return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
-    //     }
-
-    //     const phoneRegex = /^[0-9]{10}$/;
-    //     if (!phoneRegex.test(phone)) {
-    //         return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
-    //     }
-
-    //     if (password.length < 8) {
-    //         return Swal.fire("Error", "Password must be at least 8 characters long.", "error");
-    //     }
-
-    //     Swal.fire({
-    //         title: "Success!",
-    //         text: "Details validated.",
-    //         icon: "success",
-    //         confirmButtonText: "Send",
-    //     }).then(() => {
-    //         e.target.submit();
-    //     });
-    // });
-
+        
     document.addEventListener("DOMContentLoaded", () => {
             const form = document.getElementById("add-form");
             const submitBtn = document.getElementById("submitBtn");

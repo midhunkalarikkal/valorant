@@ -52,7 +52,7 @@
                             </div>
                             <input type="hidden" name="old_image" value="<%= user.image %>">
                             <div class="input-field d-flex flex-row">
-                                <button type="submit" class="btn w-50"
+                                <button type="submit" class="btn w-50" id="submitBtn" onclick="submitClicked()"
                                     style="background-color: #ff4654; color: aliceblue;">Update User</button>
                                 <div class="hidden" style="color: rgba(240, 248, 255, 0);">_</div>
                                 <a href="/editback" class="btn  w-50"
@@ -60,13 +60,15 @@
                             </div>
                             <div class="p-2">
                                 <% if(message) { %>
-                                    <div class="alert alert-dismissible fade show alert-<%=(message.type)%>" role="alert">
-                                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                                    <div class="alert alert-dismissible fade show alert-<%=(message.type)%>"
+                                        role="alert">
+                                        <button class="btn-close" type="button" data-bs-dismiss="alert"
+                                            aria-label="close"></button>
                                         <strong>
                                             <%= message.message %>
                                         </strong>
                                     </div>
-                                <%}%>
+                                    <%}%>
                             </div>
                         </form>
                     </div>
@@ -82,47 +84,57 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-        <script>
-            ////// Alert hider \\\\\\
+    <script>
+        ////// Alert hider \\\\\\
+        setTimeout(function () {
+            const alert = document.querySelector('.alert');
+            if (alert) {
+                alert.style.display = 'none';
+            }
+        }, 3000);
+
+        ////// form validation \\\\\\
+        document.getElementById("edit-form").addEventListener("submit", function (e) {
+            e.preventDefault(); 
+
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+
+            const nameRegex = /^[A-Za-z\s]{4,20}$/;
+            if (!nameRegex.test(name)) {
+                return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
+            }
+
+            if (!email.endsWith("@gmail.com")) {
+                return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
+            }
+
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(phone)) {
+                return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
+            }
+
+            showLoading();
+
             setTimeout(function () {
-                const alert = document.querySelector('.alert');
-                if (alert) {
-                    alert.style.display = 'none';
+                e.target.submit();
+            }, 1500);
+        });
+
+        function showLoading() {
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
                 }
-            }, 3000);
-
-            ////// form validation \\\\\\
-            document.getElementById("edit-form").addEventListener("submit", function (e) {
-                e.preventDefault();
-
-                const name = document.getElementById("name").value.trim();
-                const email = document.getElementById("email").value.trim();
-                const phone = document.getElementById("phone").value.trim();
-
-                const nameRegex = /^[A-Za-z\s]{4,20}$/;
-                if (!nameRegex.test(name)) {
-                    return Swal.fire("Error", "Name must be 4-20 characters long and contain only alphabets and spaces.", "error");
-                }
-
-                if (!email.endsWith("@gmail.com")) {
-                    return Swal.fire("Error", "Email must end with '@gmail.com'.", "error");
-                }
-
-                const phoneRegex = /^[0-9]{10}$/;
-                if (!phoneRegex.test(phone)) {
-                    return Swal.fire("Error", "Phone number must contain exactly 10 digits.", "error");
-                }
-
-                Swal.fire({
-                    title: "Success!",
-                    text: "Form submitted successfully.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                }).then(() => {
-                    e.target.submit();
-                });
             });
-        </script>
+        }
+
+    </script>
 </body>
 
 </html>

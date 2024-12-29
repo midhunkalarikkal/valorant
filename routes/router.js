@@ -320,7 +320,6 @@ router.post('/add',isAdminAuthenticated, upload.single("image"), async (req, res
         });
 
         await user.save();
-        
         return res.json({
             success: true,
             message: "User added successfully..",
@@ -352,7 +351,11 @@ router.post('/update/:id',upload.single('image'), async (req, res, next) => {
 
         const existingUser = await User.findOne({ email: req.body.email });
         if (existingUser && existingUser._id.toString() !== id) {
-            return res.status(400).send({ message: "Email already exists!" });
+            req.session.message = {
+                type: "danger",
+                message: "User updation error.",
+            };
+            return res.redirect('/admin_users');
         }
 
         let newImageUrl = req.body.old_image;
