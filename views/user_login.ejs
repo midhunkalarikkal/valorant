@@ -51,14 +51,20 @@
                                         <%= message %>
                                     </strong>
                                 </div>
-                            <% } %>
+                                <% } %>
+                        </div>
+                        <div class="text-center border p-2 rounded mt-3"
+                            style="max-width: 300px; margin: auto; font-size: 0.85rem;">
+                            <h6 class="mb-1 fw-semibold fs-6">Sample Credentials</h6>
+                            <p class="mb-1"><strong>Email:</strong> sample@gmail.com</p>
+                            <p><strong>Password:</strong> Sample@123</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -78,94 +84,94 @@
 
         //////  User login \\\\\\
         document.getElementById("login-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
+            e.preventDefault();
 
-                const email = document.getElementById("email").value;
-                const password = document.getElementById("pass").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("pass").value;
 
-                const emailRegex = /^[^\s@]+@gmail\.com$/;
-                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,20}$/;
+            const emailRegex = /^[^\s@]+@gmail\.com$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,20}$/;
 
-                if (!email || !password) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Missing Information",
-                        text: "Please fill out all fields!",
-                    });
-                    return;
-                }
-
-                if (!emailRegex.test(email)) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Invalid Email",
-                        text: "Please enter a valid email address.",
-                    });
-                    return;
-                }
-
-                if (!passwordRegex.test(password)) {
-                    Swal.fire({
-                        icon: "warning",
-                        title: "Weak Password",
-                        text: "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and be at most 20 characters long.",
-                    });
-                    return;
-                }
-
-        try {
-            showLoading();
-            const response = await fetch("/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-            });
-
-            const data = await response.json();
-            Swal.close();
-
-            if (data.success) {
-            Swal.fire({
-                icon: "success",
-                title: "Login Successful",
-                text: data.message,
-                timer: 2000,
-                showConfirmButton: false,
-                allowOutsideClick: false,
-            }).then(() => {
-                window.location.href = data.redirectUrl;
-            });
-            } else {
-            Swal.fire({
-                icon: "error",
-                title: "Login Failed",
-                text: data.message,
-            });
+            if (!email || !password) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Missing Information",
+                    text: "Please fill out all fields!",
+                });
+                return;
             }
-        } catch (err) {
-            Swal.close();
-            Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "An error occurred, please try again later",
-            });
-        }
-        });
 
-        function showLoading(){
+            if (!emailRegex.test(email)) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Invalid Email",
+                    text: "Please enter a valid email address.",
+                });
+                return;
+            }
+
+            if (!passwordRegex.test(password)) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Weak Password",
+                    text: "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and be at most 20 characters long.",
+                });
+                return;
+            }
+
+            try {
+                showLoading();
+                const response = await fetch("/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+                Swal.close();
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Login Successful",
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.location.href = data.redirectUrl;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Login Failed",
+                        text: data.message,
+                    });
+                }
+            } catch (err) {
                 Swal.close();
                 Swal.fire({
-                    title: 'Loading...',
-                    text: 'Please wait.',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    didOpen: () => {
-                        Swal.showLoading();
-                    }
+                    icon: "error",
+                    title: "Error",
+                    text: "An error occurred, please try again later",
                 });
             }
+        });
+
+        function showLoading() {
+            Swal.close();
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Please wait.',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
     </script>
 </body>
 
